@@ -20,7 +20,7 @@ class ApiManager{
             
             $instance = new $namespace;
             $requestBody = new \App\api\RequestBody($request);
-
+          
             if(method_exists($instance, $action))
                 $instance->$action($requestBody, $responseBody);
             else

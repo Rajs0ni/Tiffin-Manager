@@ -3,7 +3,7 @@
 namespace App\Api\Entities;
 
 use App\api\RequestBody;
-use App\api\ResposnseBopdy;
+use App\api\ResponseBody;
 use App\Tiffin as TiffinModel;
 use Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -16,8 +16,8 @@ class Tiffin{
         try
         {
             $provider_id = $requestBody->payload['id'];
-            $provider = User::findOfFail($provider_id);
-
+            $provider = User::findOrFail($provider_id);
+         
             if($provider)
             {
                 $tiffins = TiffinModel::all()->where('provider_id', $provider->id);
