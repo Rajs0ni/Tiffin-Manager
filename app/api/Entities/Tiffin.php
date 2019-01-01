@@ -105,7 +105,7 @@ class Tiffin{
 
                 if($provider)
                 {
-                    $this->validator($requestBody);
+                    $this->validateTiffin($requestBody);
 
                     $tiffin_id = $requestBody->payload['id'];
                     $tiffin = TiffinModel::findOrNew($tiffin_id);
@@ -188,7 +188,43 @@ class Tiffin{
         }
     }
 
-    public function validator(RequestBody $requestBody)
+    public function saveMenu(RequestBody $requestBody, ResponseBody $responseBody)
+    {
+        try
+        {
+            $provider_id = $requestBody->payload['provider_id'];
+
+            if($provider_id)
+            {
+                $provider = User::findOrFail($provider_id);
+                
+                if($provider)
+                {
+                    $tiffin_id = $requestBody->payload['$tiffin_id'];
+
+                    if($tiffin_id)
+                    {
+                        $tiffin = $provider->tiffin($tiffin_id);
+
+                        if($tiffin)
+                        {
+                            $this->validateMenu($requestBody);
+                        }
+                    }
+                    else
+                        throw new \Exception("Tiffin Identification Not Found");
+                }
+            }
+            else
+                throw new \Exception("Provider Identification Not Found");
+        }
+        catch(\Exception $e)
+        {
+
+        }
+    }
+
+    public function validateTiffin(RequestBody $requestBody)
     {
         $validator = Validator::make($requestBody->payload, [
             'provider_id' => 'required',
@@ -200,5 +236,10 @@ class Tiffin{
         if ($validator->fails()) {
             throw new \Exception ($validator->errors()->first());
         }
+    }
+
+    public function validateMenu(RequestBody $requestBody)
+    {
+        
     }
 }
