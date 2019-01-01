@@ -24,6 +24,7 @@ class CreateTiffinsTable extends Migration
             $table->time('dinner_start')->default('16:00');
             $table->time('dinner_end')->default('18:00');
             $table->timestamps();
+
         });
     }
 
