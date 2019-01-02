@@ -19,8 +19,4 @@ class User extends Authenticatable
         return $this->hasMany(Tiffin::class, 'provider_id');
     }
 
-    public function scopeTiffin($query, $tiffin_id)
-    {
-        return Tiffin::findOrFail($tiffin_id);  
-    }
 }

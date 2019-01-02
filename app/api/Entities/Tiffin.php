@@ -11,84 +11,48 @@ use App\User;
 
 class Tiffin{
 
+    public function validateProvider(RequestBody $requestBody)
+    {
+        $provider_id = $requestBody->payload['provider_id'];
+        $provider = User::findOrFail($provider_id);
+        return $provider;
+    }
+
     public function list(RequestBody $requestBody, ResponseBody $responseBody)
     {
         try
         {
-            $provider_id = $requestBody->payload['provider_id'];
-
-            if($provider_id)
-            {
-                $provider = User::findOrFail($provider_id);
-         
-                if($provider)
-                {
-                    $tiffins = $provider->tiffins;
-                
-                    if($tiffins)
-                    {
-                        $responseBody->setData($tiffins);
-                        $responseBody->setStatus(200);
-                    }
-                }
-            }
-            else
-                throw new \Exception("Provider Identification Not Found");
-            
+            $provider = $this->validateProvider($requestBody);
+            $tiffins = $provider->tiffins;
+            $tiffins?$responseBody->setData($tiffins)->setStatus(200):'';
         }
         catch (ModelNotFoundException $e)
         {
-            $responseBody->setError("Model Not Found");
-            $responseBody->setStatus(500);
+            $responseBody->setError("Model Not Found")->setStatus(500);
         }
         catch (\Exception $e)
         {
-            $responseBody->setError($e->getMessage());
-            $responseBody->setStatus(500);
-        }
-        
+            $responseBody->setError($e->getMessage())->$responseBody->setStatus(500);
+        }   
     }
 
     public function get(RequestBody $requestBody, ResponseBody $responseBody)
     {
         try
         {
-            $provider_id = $requestBody->payload['provider_id'];
+            $provider = $this->validateProvider($requestBody);
+            $tiffin_id = $requestBody->payload['tiffin_id'];
+            $tiffin = $provider->tiffins()->findOrFail($tiffin_id);
 
-            if($provider_id)
-            {
-                $provider = User::findOrFail($provider_id);
-
-                if($provider)
-                {
-                    $tiffin_id = $requestBody->payload['tiffin_id'];
-
-                    if($tiffin_id)
-                    {
-                        $tiffin = $provider->tiffin($tiffin_id);
-
-                        if($tiffin)
-                        {
-                            $responseBody->setData($tiffin);
-                            $responseBody->setStatus(200);
-                        }
-                    }
-                    else
-                        throw new \Exception("Tiffin Identification Not Found");
-                }
-            }
-            else
-                throw new \Exception("Provider Identification Not Found");
+            $responseBody->setData($tiffin)->setStatus(200);              
         }
         catch (ModelNotFoundException $e)
         {
-            $responseBody->setError("Model Not Found");
-            $responseBody->setStatus(500);
+            $responseBody->setError("Model Not Found")->setStatus(500);
         }
         catch (\Exception $e)
         {
-            $responseBody->setError($e->getMessage());
-            $responseBody->setStatus(500);
+            $responseBody->setError($e->getMessage())->setStatus(500);
         }
        
     }
@@ -97,130 +61,115 @@ class Tiffin{
     {
         try
         {
-            $provider_id = $requestBody->payload['provider_id'];
-            
-            if($provider_id)
-            {
-                $provider = User::findOrFail($provider_id);
+            $provider = $this->validateProvider($requestBody);
+            $this->validateTiffin($requestBody);
+            $tiffin_id = $requestBody->payload['id'];
+            $tiffin = $provider->tiffins()->findOrNew($tiffin_id);
+            $tiffin->name = $requestBody->payload['name'];
+            $tiffin->detail = $requestBody->payload['detail'];
+            $tiffin->price = $requestBody->payload['price'];
 
-                if($provider)
-                {
-                    $this->validateTiffin($requestBody);
+            $provider->tiffins()->save($tiffin);
 
-                    $tiffin_id = $requestBody->payload['id'];
-                    $tiffin = TiffinModel::findOrNew($tiffin_id);
-
-                    $tiffin->name = $requestBody->payload['name'];
-                    $tiffin->detail = $requestBody->payload['detail'];
-                    $tiffin->price = $requestBody->payload['price'];
-
-                    $provider->tiffins()->save($tiffin);
-
-                    if($tiffin)
-                    {
-                        $responseBody->setData($tiffin);
-                        $responseBody->setStatus(200);
-                        $responseBody->setFlash("Tiffin Created Successfully !!");
-                    }
-                    
-                }
-            }
-            else
-                throw new \Exception("Provider Identification Not Found");
+            $tiffin?$responseBody->setData($tiffin)->setStatus(200)->setFlash("Tiffin Created Successfully !!"):'';
         }
         catch (ModelNotFoundException $e)
         {
-            $responseBody->setError("Model Not Found");
-            $responseBody->setFlash("Tiffin can't be created");
-            $responseBody->setStatus(500);
+            $responseBody->setError("Model Not Found")
+                         ->setFlash("Tiffin can't be created")
+                         ->setStatus(500);
         }
         catch (\Exception $e)
         {
-            $responseBody->setError($e->getMessage());
-            $responseBody->setFlash("Tiffin can't be created");
-            $responseBody->setStatus(500);
+            $responseBody->setError($e->getMessage())
+                         ->setFlash("Tiffin can't be created")
+                         ->setStatus(500);
         }
-
     }
 
     public function delete(RequestBody $requestBody, ResponseBody $responseBody)
     {
         try
         {
-            $provider_id = $requestBody->payload['provider_id'];
+            $provider = $this->validateProvider($requestBody);
+            $tiffin_id = $requestBody->payload['tiffin_id'];
+            $tiffin = $provider->tiffins()->findOrFail($tiffin_id);
+            $tiffin->delete();
 
-            if($provider_id)
-            {
-                $provider = User::findOrFail($provider_id);
-
-                if($provider)
-                {
-                    $tiffin_id = $requestBody->payload['tiffin_id'];
-
-                    if($tiffin_id)
-                    {
-                        $tiffin = $provider->tiffin($tiffin_id);
-
-                        if($tiffin)
-                        {
-                            $tiffin->delete();
-                            $responseBody->setStatus(200);
-                            $responseBody->setFlash("Tiffin Deleted Successfully !!");      
-                        }
-                    }
-                    else
-                        throw new \Exception("Tiffin Identification Not Found");
-                }
-            }
-            else
-                throw new \Exception("Provider Identification Not Found");
+            $responseBody->setStatus(200)->setFlash("Tiffin Deleted Successfully !!");        
         }
         catch (ModelNotFoundException $e)
         {
-            $responseBody->setError("Model Not Found");
-            $responseBody->setStatus(500);
+            $responseBody->setError("Model Not Found")->setStatus(500);
+                        
         }
         catch(\Exception $e)
         {
-            $responseBody->setError($e->getMessage());
-            $responseBody->setFlash("Tiffin can't be deleted");
-            $responseBody->setStatus(500);
+            $responseBody->setError($e->getMessage())->setStatus(500)
+                         ->setFlash("Tiffin can't be deleted");                 
         }
     }
-
+    
     public function saveMenu(RequestBody $requestBody, ResponseBody $responseBody)
     {
         try
         {
-            $provider_id = $requestBody->payload['provider_id'];
+            $provider = $this->validateProvider($requestBody);
+            $tiffin_id = $requestBody->payload['tiffin_id'];
+            $tiffin = $provider->tiffins()->findOrFail($tiffin_id);    
+            $day = $requestBody->payload['day'];
+            $menu = $tiffin->menus()->where('day',$day)->first();
+            $operation = $requestBody->payload['operation'];
 
-            if($provider_id)
+            if($operation === 'update')
             {
-                $provider = User::findOrFail($provider_id);
-                
-                if($provider)
+                if($menu)           
                 {
-                    $tiffin_id = $requestBody->payload['$tiffin_id'];
+                    $this->validateMenu($requestBody);
+                    $menu->lunch_desc = $requestBody->payload['lunch_desc'];
+                    $menu->dinner_desc = $requestBody->payload['dinner_desc'];
+                    $menu->day = $requestBody->payload['day'];
+                    $tiffin->menus()->save($menu);
 
-                    if($tiffin_id)
-                    {
-                        $tiffin = $provider->tiffin($tiffin_id);
-
-                        if($tiffin)
-                        {
-                            $this->validateMenu($requestBody);
-                        }
-                    }
-                    else
-                        throw new \Exception("Tiffin Identification Not Found");
+                    $responseBody->setFlash("Menu for the day updated sccuessfully !!")
+                                 ->setData($menu)->setStatus(500);
                 }
+                else
+                {
+                    $responseBody->setFlash("Menu can't be updated")->setStatus(500)
+                                 ->setError("Menu for the day not found to update");                 
+                }  
             }
             else
-                throw new \Exception("Provider Identification Not Found");
+            {      
+                if($menu)                                      
+                {
+                    $responseBody->setFlash("Menu can't be created")->setStatus(500)
+                                 ->setError("Menu for the day already exists");          
+                }
+                else
+                {
+                    $this->validateMenu($requestBody);
+                    $menu = new \App\Tiffin_Menu;
+                    $menu->lunch_desc = $requestBody->payload['lunch_desc'];
+                    $menu->dinner_desc = $requestBody->payload['dinner_desc'];
+                    $menu->day = $requestBody->payload['day'];
+                    $tiffin->menus()->save($menu);
+
+                    $responseBody->setFlash("Menu for the day created sccuessfully !!")
+                                 ->setData($menu)->setStatus(500);
+                }
+            }
+        }
+        catch(ModelNotFoundException $e)
+        {
+            $responseBody->setError("Model Not Found")->setStatus(500)
+                         ->setFlash("Menu can't be created"); 
         }
         catch(\Exception $e)
         {
-
+            $responseBody->setError($e->getMessage())->setStatus(500)
+                         ->setFlash("Menu can't be created");
         }
     }
 
@@ -240,6 +189,14 @@ class Tiffin{
 
     public function validateMenu(RequestBody $requestBody)
     {
-        
+        $validator = Validator::make($requestBody->payload, [
+            'lunch_desc' => 'required | string',
+            'dinner_desc' => 'required | string',
+            'day' => 'required', 
+        ]);
+
+        if ($validator->fails()) {
+            throw new \Exception ($validator->errors()->first());
+        }
     }
 }
