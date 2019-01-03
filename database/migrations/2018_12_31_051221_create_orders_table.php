@@ -15,8 +15,9 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->unique();
-            $table->integer('tiffin_id')->unique();
+            $table->integer('customer_id');
+            $table->integer('provider_id');
+            $table->integer('tiffin_id');
             $table->integer('no_of_tiffin')->default(1);
             $table->boolean('is_lunch')->default(false);
             $table->boolean('is_dinner')->default(false);

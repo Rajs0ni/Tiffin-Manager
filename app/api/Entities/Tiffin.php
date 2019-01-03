@@ -13,9 +13,12 @@ class Tiffin{
 
     public function validateProvider(RequestBody $requestBody)
     {
-        $provider_id = $requestBody->payload['provider_id'];
+        $provider_id = $requestBody->payload['user_id'];
         $provider = User::findOrFail($provider_id);
-        return $provider;
+        if($provider->is_provider)
+            return $provider;
+        else
+            throw new \Exception("Not a Provider");
     }
 
     public function list(RequestBody $requestBody, ResponseBody $responseBody)
@@ -24,7 +27,9 @@ class Tiffin{
         {
             $provider = $this->validateProvider($requestBody);
             $tiffins = $provider->tiffins;
-            $tiffins?$responseBody->setData($tiffins)->setStatus(200):'';
+            !$tiffins->isEmpty() ? 
+            $responseBody->setData($tiffins)->setStatus(200) :
+            $responseBody->setError('Tiffins Not Found')->setStatus(500);
         }
         catch (ModelNotFoundException $e)
         {
@@ -32,7 +37,7 @@ class Tiffin{
         }
         catch (\Exception $e)
         {
-            $responseBody->setError($e->getMessage())->$responseBody->setStatus(500);
+            $responseBody->setError($e->getMessage())->setStatus(500);
         }   
     }
 
@@ -68,7 +73,6 @@ class Tiffin{
             $tiffin->name = $requestBody->payload['name'];
             $tiffin->detail = $requestBody->payload['detail'];
             $tiffin->price = $requestBody->payload['price'];
-
             $provider->tiffins()->save($tiffin);
 
             $tiffin?$responseBody->setData($tiffin)->setStatus(200)->setFlash("Tiffin Created Successfully !!"):'';

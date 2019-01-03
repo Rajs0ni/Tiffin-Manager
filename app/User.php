@@ -14,9 +14,16 @@ class User extends Authenticatable
          'remember_token',
     ];
 
+
     public function tiffins()
     {
         return $this->hasMany(Tiffin::class, 'provider_id');
     }
 
+    public function orders($columnName)
+    {
+        return $this->hasMany(Order::class, $columnName)
+                    ->orderBy('created_at','desc');
+                    
+    }
 }

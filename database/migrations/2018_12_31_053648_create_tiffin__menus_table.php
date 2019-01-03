@@ -13,9 +13,9 @@ class CreateTiffinMenusTable extends Migration
      */
     public function up()
     {
-        Schema::create('tiffin__menus', function (Blueprint $table) {
+        Schema::create('tiffin_menus', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('tiffin_id');
+            $table->integer('tiffin_id')->unsigned();
             $table->string('lunch_desc');
             $table->string('dinner_desc');
             $table->integer('day')->unsigned(); // Min:1 | Max: 7
