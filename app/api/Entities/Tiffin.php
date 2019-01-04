@@ -8,12 +8,13 @@ use App\Tiffin as TiffinModel;
 use Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\User;
+use App\Tiffin_Menu;
 
 class Tiffin{
 
     public function validateProvider(RequestBody $requestBody)
     {
-        $provider_id = $requestBody->payload['user_id'];
+        $provider_id = $requestBody->payload['provider_id'];
         $provider = User::findOrFail($provider_id);
         if($provider->is_provider)
             return $provider;
@@ -113,57 +114,27 @@ class Tiffin{
                          ->setFlash("Tiffin can't be deleted");                 
         }
     }
-    
+
     public function saveMenu(RequestBody $requestBody, ResponseBody $responseBody)
     {
         try
         {
             $provider = $this->validateProvider($requestBody);
             $tiffin_id = $requestBody->payload['tiffin_id'];
-            $tiffin = $provider->tiffins()->findOrFail($tiffin_id);    
+            $tiffin = $provider->tiffins()->findOrFail($tiffin_id);
+            $this->validateMenu($requestBody);
             $day = $requestBody->payload['day'];
             $menu = $tiffin->menus()->where('day',$day)->first();
-            $operation = $requestBody->payload['operation'];
 
-            if($operation === 'update')
+            if($menu == null)
             {
-                if($menu)           
-                {
-                    $this->validateMenu($requestBody);
-                    $menu->lunch_desc = $requestBody->payload['lunch_desc'];
-                    $menu->dinner_desc = $requestBody->payload['dinner_desc'];
-                    $menu->day = $requestBody->payload['day'];
-                    $tiffin->menus()->save($menu);
-
-                    $responseBody->setFlash("Menu for the day updated sccuessfully !!")
-                                 ->setData($menu)->setStatus(500);
-                }
-                else
-                {
-                    $responseBody->setFlash("Menu can't be updated")->setStatus(500)
-                                 ->setError("Menu for the day not found to update");                 
-                }  
+                $menu = new Tiffin_Menu;
+                $menu->day = $day;
             }
-            else
-            {      
-                if($menu)                                      
-                {
-                    $responseBody->setFlash("Menu can't be created")->setStatus(500)
-                                 ->setError("Menu for the day already exists");          
-                }
-                else
-                {
-                    $this->validateMenu($requestBody);
-                    $menu = new \App\Tiffin_Menu;
-                    $menu->lunch_desc = $requestBody->payload['lunch_desc'];
-                    $menu->dinner_desc = $requestBody->payload['dinner_desc'];
-                    $menu->day = $requestBody->payload['day'];
-                    $tiffin->menus()->save($menu);
-
-                    $responseBody->setFlash("Menu for the day created sccuessfully !!")
-                                 ->setData($menu)->setStatus(500);
-                }
-            }
+            $menu->lunch_desc = $requestBody->payload['lunch_desc'];
+            $menu->dinner_desc = $requestBody->payload['dinner_desc'];
+            $tiffin->menus()->save($menu);
+            $responseBody->setData($menu)->setStatus(200)->setFlash('Menu Created Successfully');
         }
         catch(ModelNotFoundException $e)
         {
@@ -177,13 +148,40 @@ class Tiffin{
         }
     }
 
+    public function getMenu(RequestBody $requestBody, ResponseBody $responseBody)
+    {
+        try
+        {
+            $provider = $this->validateProvider($requestBody);
+            $tiffin_id = $requestBody->payload['tiffin_id'];
+            $tiffin = $provider->tiffins()->findOrFail($tiffin_id);
+            $day = $requestBody->payload['day'];
+            $menu = $tiffin->menus()->where('day',$day)->first();
+
+            isset($menu) ?
+            $responseBody->setData($menu)->setStatus(200) :
+            $responseBody->setError("Menu Not found for the day ".$day)->setStatus(500);
+
+        }
+        catch(ModelNotFoundException $e)
+        {
+            $responseBody->setError("Model Not Found")->setStatus(500)
+                         ->setFlash("Menu Not Found"); 
+        }
+        catch(\Exception $e)
+        {
+            $responseBody->setError($e->getMessage())->setStatus(500)
+                         ->setFlash("Menu Not Found");
+        }
+    }
+
     public function validateTiffin(RequestBody $requestBody)
     {
         $validator = Validator::make($requestBody->payload, [
             'provider_id' => 'required',
             'name' => 'required | string | unique:tiffins',
             'detail' => 'required',
-            'price' => 'required | numeric'         //todo:: Price must be in of range [ SQL Query Exception ]
+            'price' => 'required | numeric' 
         ]);
 
         if ($validator->fails()) {
@@ -196,7 +194,7 @@ class Tiffin{
         $validator = Validator::make($requestBody->payload, [
             'lunch_desc' => 'required | string',
             'dinner_desc' => 'required | string',
-            'day' => 'required', 
+            'day' => 'required | numeric | between:1,7', 
         ]);
 
         if ($validator->fails()) {
