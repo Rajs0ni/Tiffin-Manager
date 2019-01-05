@@ -12,16 +12,6 @@ use App\Tiffin_Menu;
 
 class Tiffin{
 
-    public function validateProvider(RequestBody $requestBody)
-    {
-        $provider_id = $requestBody->payload['provider_id'];
-        $provider = User::findOrFail($provider_id);
-        if($provider->is_provider)
-            return $provider;
-        else
-            throw new \Exception("Not a Provider");
-    }
-
     public function list(RequestBody $requestBody, ResponseBody $responseBody)
     {
         try
@@ -54,7 +44,8 @@ class Tiffin{
         }
         catch (ModelNotFoundException $e)
         {
-            $responseBody->setError("Model Not Found")->setStatus(500);
+            $responseBody->setError("Model Not Found")->setStatus(500)
+                         ->setFlash("Tiffin Not Found");
         }
         catch (\Exception $e)
         {
@@ -69,7 +60,7 @@ class Tiffin{
         {
             $provider = $this->validateProvider($requestBody);
             $this->validateTiffin($requestBody);
-            $tiffin_id = $requestBody->payload['id'];
+            $tiffin_id = $requestBody->payload['tiffin_id'];
             $tiffin = $provider->tiffins()->findOrNew($tiffin_id);
             $tiffin->name = $requestBody->payload['name'];
             $tiffin->detail = $requestBody->payload['detail'];
@@ -157,7 +148,7 @@ class Tiffin{
             $tiffin = $provider->tiffins()->findOrFail($tiffin_id);
             $day = $requestBody->payload['day'];
             $menu = $tiffin->menus()->where('day',$day)->first();
-
+            $menu = $menu->with('tiffin')->first();
             isset($menu) ?
             $responseBody->setData($menu)->setStatus(200) :
             $responseBody->setError("Menu Not found for the day ".$day)->setStatus(500);
@@ -179,8 +170,8 @@ class Tiffin{
     {
         $validator = Validator::make($requestBody->payload, [
             'provider_id' => 'required',
-            'name' => 'required | string | unique:tiffins',
-            'detail' => 'required',
+            'name' => 'required | string |unique:tiffins,name,'.$requestBody->payload['tiffin_id'],
+            'detail' => 'required | regex:/[^a-zA-Z0-9]/',
             'price' => 'required | numeric' 
         ]);
 
@@ -200,5 +191,15 @@ class Tiffin{
         if ($validator->fails()) {
             throw new \Exception ($validator->errors()->first());
         }
+    }
+
+    public function validateProvider(RequestBody $requestBody)
+    {
+        $provider_id = $requestBody->payload['provider_id'];
+        $provider = User::findOrFail($provider_id);
+        if($provider->is_provider)
+            return $provider;
+        else
+            throw new \Exception("Not a Provider");
     }
 }

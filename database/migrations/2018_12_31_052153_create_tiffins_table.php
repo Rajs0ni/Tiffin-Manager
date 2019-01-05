@@ -18,7 +18,7 @@ class CreateTiffinsTable extends Migration
             $table->integer('provider_id')->unsigned();
             $table->string('name');
             $table->string('detail');
-            $table->decimal('price',3,2);
+            $table->decimal('price',10,2);
             $table->time('lunch_start')->default('8:00');
             $table->time('lunch_end')->default('10:00');
             $table->time('dinner_start')->default('16:00');

@@ -24,7 +24,8 @@ class Order{
         }
         catch(ModelNotFoundException $e)
         {
-            $responseBody->setError("Model Not Found")->setStatus(500);
+            $responseBody->setError("Model Not Found")->setStatus(500)
+                         ->setFlash("Orders Not Found");
         }
         catch(\Exception $e)
         {
@@ -39,17 +40,9 @@ class Order{
             $user_id  = $requestBody->payload['user_id'];
             $user = User::findOrFail($user_id);
             $order_id = $requestBody->payload['order_id'];
-
-            if($user->is_provider == 1)
-            {
-                $order = $user->orders('provider_id')->findOrFail($order_id);
-               
-            }
-            else
-            {
-                $order = $user->orders('customer_id')->findOrFail($order_id);
-            }
-
+            $order = $user->is_provider == 1 ? 
+            $user->orders('provider_id')->findOrFail($order_id) :
+            $user->orders('customer_id')->findOrFail($order_id);
             $customer_name = User::findOrFail($order->customer_id)->name;
             $tiffin_name = Tiffin::findOrFail($order->tiffin_id)->name;
 
@@ -63,11 +56,17 @@ class Order{
         }
         catch(ModelNotFoundException $e)
         {
-            $responseBody->setError("Model Not Found")->setStatus(500);
+            $responseBody->setError("Model Not Found")->setStatus(500)
+                         ->setFlash("Order Not Found");
         }
         catch(\Exception $e)
         {
             $responseBody->setError("Order Not Found")->setStatus(500);
         }
+    }
+
+    public function save(RequestBody $requestBody, ResponseBody $responseBody)
+    {
+        
     }
 }
