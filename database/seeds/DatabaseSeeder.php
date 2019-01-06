@@ -13,6 +13,5 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(UsersTableSeeder::class);
         factory(App\Tiffin::class, 2)->create();
-        factory(App\Order::class, 5)->create();
     }
 }

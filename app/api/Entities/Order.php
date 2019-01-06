@@ -42,8 +42,7 @@ class Order{
 
             if($user->is_provider == 1)
             {
-                $order = $user->orders('provider_id')->findOrFail($order_id);
-               
+                $order = $user->orders('provider_id')->findOrFail($order_id);     
             }
             else
             {

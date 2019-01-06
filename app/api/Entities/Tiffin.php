@@ -13,7 +13,7 @@ class Tiffin{
 
     public function validateProvider(RequestBody $requestBody)
     {
-        $provider_id = $requestBody->payload['user_id'];
+        $provider_id = $requestBody->payload['provider_id'];
         $provider = User::findOrFail($provider_id);
         if($provider->is_provider)
             return $provider;
@@ -104,8 +104,8 @@ class Tiffin{
         }
         catch (ModelNotFoundException $e)
         {
-            $responseBody->setError("Model Not Found")->setStatus(500);
-                        
+            $responseBody->setError("Model Not Found")->setStatus(500)
+                         ->setFlash("Tiffin can't be deleted");
         }
         catch(\Exception $e)
         {
@@ -196,7 +196,7 @@ class Tiffin{
         $validator = Validator::make($requestBody->payload, [
             'lunch_desc' => 'required | string',
             'dinner_desc' => 'required | string',
-            'day' => 'required', 
+            'day' => 'required | unique:tiffin_menu,day', 
         ]);
 
         if ($validator->fails()) {

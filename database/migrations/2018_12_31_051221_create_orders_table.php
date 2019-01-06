@@ -15,8 +15,8 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('customer_id');
-            $table->integer('provider_id');
+            $table->integer('customer_id')->unsigned();
+            $table->integer('provider_id')->unsigned();
             $table->integer('tiffin_id');
             $table->integer('no_of_tiffin')->default(1);
             $table->boolean('is_lunch')->default(false);
@@ -25,6 +25,9 @@ class CreateOrdersTable extends Migration
             $table->decimal('total_amount',4,2); // Price * No_Of_Tiffins
             $table->integer('status')->default(0); // [0 => undelivered, 1 => delivered] 
             $table->timestamps();
+
+            $table->foreign('customer_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('provider_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
