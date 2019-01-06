@@ -32,6 +32,6 @@ class CreateTiffinMenusTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tiffin__menus');
+        Schema::dropIfExists('tiffin_menus');
     }
 }
