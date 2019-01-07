@@ -67,7 +67,36 @@ class Order{
 
     public function save(RequestBody $requestBody, ResponseBody $responseBody)
     {
-        
+        try
+        {
+            $customer_id = $requestBody->payload['customer_id'];
+            $customer = User::findOrFail($customer_id);
+            $this->validate($requestBody);
+            $order = new OrderModel;
+            $time = $requestBody->payload['time'];
+            $order->provider_id = $customer->assoc_provider;
+            $order->tiffin_id = $customer->tiffin_plan;
+            $order->no_of_tiffin = $requestBody->payload['quantity'];
+            $time == 'lunch' ? $order->is_lunch = true : $order->is_dinner = true;
+            $order->price = $requestBody->payload['price'];
+            $order->total_amount = $requestBody->payload['quantity'] * $requestBody->payload['price'];
+            $customer->orders('customer_id')->save($order);
+
+            if($order)
+            {
+                $responseBody->setFlash("Order has been placed successfully !!")->setStatus(200);                
+            }
+        }
+        catch(ModelNotFoundException $e)
+        {
+            $responseBody->setError("Model Not Found")->setStatus(500)
+                         ->setFlash("Order can not be placed");
+        }
+        catch(\Exception $e)
+        {
+            $responseBody->setError($e->getMessage())->setStatus(500)
+                         ->setFlash("Order can not be placed");
+        }
     }
 
     public function deliver(RequestBody $requestBody, ResponseBody $responseBody)
@@ -80,7 +109,7 @@ class Order{
             {
                 $order_id = $requestBody->payload['order_id'];
                 $order = $user->orders('provider_id')->findOrFail($order_id);
-                $order->status = true;
+                $order->status = !$order->status;
                 $order->save();
                 $responseBody->setFlash("Order delivered")->setStatus(200);    
             }
@@ -94,6 +123,17 @@ class Order{
         {
             $responseBody->setError("Order Not Found")->setStatus(500)
                          ->setFlash("Order can't be delivered");
+        }
+    }
+
+    public function validate(RequestBody $requestBody)
+    {
+        $validator = Validator::make($requestBody->payload, [
+            'quantity' => 'required | numeric | min:1 | max:5',
+        ]);
+
+        if ($validator->fails()) {
+            throw new \Exception ($validator->errors()->first());
         }
     }
 }

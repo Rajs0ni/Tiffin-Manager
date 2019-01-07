@@ -198,7 +198,7 @@ class Tiffin{
     {
         $provider_id = $requestBody->payload['provider_id'];
         $provider = User::findOrFail($provider_id);
-        if($provider->is_provider)
+        if($provider->is_provider == 1)
             return $provider;
         else
             throw new \Exception("Not a Provider");

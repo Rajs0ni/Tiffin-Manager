@@ -7,24 +7,19 @@ use App\User as UserModel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class User{
-
-    public function list($data, ResponseBody $responseBody)
-    {
-        !$data->isEmpty() ? 
-        $responseBody->setData($data)->setStatus(200) :
-        $responseBody->setError('Data Not Found')->setStatus(500);
-    }
-
-    public function listProviders(RequestBody $requestBody, ResponseBody $responseBody)
+    
+    public function list(RequestBody $requestBody, ResponseBody $responseBody)
     {
         try
         {
             $providers = UserModel::where('is_provider',true)->get();
-            $this->list($providers, $responseBody);
+            !$providers->isEmpty() ? 
+            $responseBody->setData($providers)->setStatus(200) :
+            $responseBody->setError('Providers Not Found')->setStatus(500);
         }
         catch(\Exception $e)
         {
-            $responseBody->setData($e->getMessage())->setStatus(500);
+            $responseBody->setError($e->getMessage())->setStatus(500);
         }
     }
 
@@ -34,11 +29,13 @@ class User{
         {
             $provider_id = $requestBody->payload['provider_id'];
             $customers = UserModel::where('assoc_provider',$provider_id)->get();
-            $this->list($customers, $responseBody);
+            !$customers->isEmpty() ? 
+            $responseBody->setData($customers)->setStatus(200) :
+            $responseBody->setError('Customers Not Found')->setStatus(500);
         }
         catch(\Exception $e)
         {
-            $responseBody->setData($e->getMessage())->setStatus(500);
+            $responseBody->setError($e->getMessage())->setStatus(500);
         }
     }
    
@@ -59,4 +56,6 @@ class User{
             $responseBody->setError($e->getMessage())->setStatus(500);
         }
     }
+
+    
 }
