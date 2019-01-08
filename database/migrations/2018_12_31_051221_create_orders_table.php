@@ -21,8 +21,8 @@ class CreateOrdersTable extends Migration
             $table->integer('no_of_tiffin')->default(1);
             $table->boolean('is_lunch')->default(false);
             $table->boolean('is_dinner')->default(false);
-            $table->decimal('price',3,2);
-            $table->decimal('total_amount',4,2); // Price * No_Of_Tiffins
+            $table->decimal('price',10,2);
+            $table->decimal('total_amount',10,2); // Price * No_Of_Tiffins
             $table->integer('status')->default(0); // [0 => undelivered, 1 => delivered] 
             $table->timestamps();
 
