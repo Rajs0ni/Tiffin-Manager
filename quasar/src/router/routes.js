@@ -2,14 +2,25 @@
 const routes = [
   {
     path: '/',
+    redirect:'/customer',
     component: () => import('layouts/MyLayout.vue'),
     children: [
-      { path: 'index', component: () => import('pages/Index.vue') ,
-      children:[
-        { path: 'demo1', component: () => import('components/demo1.vue') },
-        { path: 'demo2', component: () => import('components/demo2.vue') }
-      ]
-    },
+      { 
+        path: 'customer', component: () => import('pages/Customer/Index.vue') ,
+        children:
+          [
+            { path: '', component: () => import('components/Customer/Menu/menu.vue') },
+            { path: 'orders', component: () => import('components/Customer/Order/list.vue') }
+          ]
+      },
+      { 
+        path: 'provider', component: () => import('pages/Provider/Index.vue') ,
+        children:
+          [
+            { path: '', component: () => import('components/Provider/Menu/menu.vue') },
+            { path: 'orders', component: () => import('components/Provider/Order/list.vue') }
+          ]
+      },
     ]
   }
 ]

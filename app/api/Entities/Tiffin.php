@@ -186,7 +186,7 @@ class Tiffin{
         $validator = Validator::make($requestBody->payload, [
             'lunch_desc' => 'required | string',
             'dinner_desc' => 'required | string',
-            'day' => 'required | numeric | between:1,7', 
+            'day' => 'required | numeric | between:0,6', 
         ]);
 
         if ($validator->fails()) {

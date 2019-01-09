@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-layout-header>
+    <q-layout-header reveal>
       <q-toolbar
         color="orange-8"
 
@@ -31,11 +31,11 @@
         inset-delimiter
       >
         <q-list-header>Essential Links</q-list-header>
-        <q-item @click.native="openURL('')">
+        <q-item  link to="/customer">
           <q-item-side icon="fas fa-users" />
           <q-item-main label="Customer"  />
         </q-item>
-        <q-item @click.native="openURL('')">
+        <q-item  link to="/provider">
             <q-item-side icon="fas fa-user-cog" />
           <q-item-main label="Provider" />
         </q-item>
@@ -50,7 +50,6 @@
 </template>
 
 <script>
-import { openURL } from 'quasar'
 
 export default {
   name: 'MyLayout',
@@ -58,9 +57,6 @@ export default {
     return {
       leftDrawerOpen: this.$q.platform.is.desktop
     }
-  },
-  methods: {
-    openURL
   }
 }
 </script>
@@ -68,6 +64,6 @@ export default {
 <style>
 .q-toolbar
 {
-  box-shadow: none
+  box-shadow: 0px !important;
 }
 </style>

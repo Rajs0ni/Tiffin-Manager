@@ -1,12 +1,12 @@
-export default {
+export const state = {
   customer:{
     menu:{},
-    orders:{}
+    orders:[]
   },
 
   provider:{
     menu:{},
-    orders:{}
+    orders:[]
   },
 
   flash_message:''
