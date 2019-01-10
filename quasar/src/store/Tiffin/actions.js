@@ -20,5 +20,10 @@ export const actions = {
     async setProviderMenu(context,payload){
         var data = await API.getProviderMenu(payload)
         context.commit('SET_PROVIDER_MENU',data)
+    },
+    async processOrder (context,payload)
+    {
+        var data = await API.processOrder(payload)
+        context.commit('SET_FLASH',data)
     }
 }

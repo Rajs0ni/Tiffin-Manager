@@ -3,7 +3,7 @@
     <q-layout-header reveal>
       <q-toolbar
         color="orange-8"
-
+       class=""
       >
         <q-btn
           flat
@@ -19,6 +19,7 @@
           Tiffin Manager
         </q-toolbar-title>
       </q-toolbar>
+      
     </q-layout-header>
 
     <q-layout-drawer

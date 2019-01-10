@@ -98,3 +98,17 @@ export const getProviderMenu = (payload) => {
         return data
     }).catch((error)=>(error))
 }
+
+export const processOrder = (payload) => {
+    return Axios.post('',{
+        namespace:"Order",
+        action:"deliver",
+        payload:{
+            user_id:1,
+            order_id:payload.order_id
+        }
+    }).then((response) => {
+        var data  = response.data
+        return data
+    }).catch((error)=>(error))
+}

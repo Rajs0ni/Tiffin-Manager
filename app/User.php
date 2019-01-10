@@ -23,7 +23,8 @@ class User extends Authenticatable
     public function orders($columnName)
     {
         return $this->hasMany(Order::class, $columnName)
-                    ->orderBy('created_at','desc');
+                    ->orderBy('created_at','desc')
+                    ->orderBy('status');
                     
     }
 }

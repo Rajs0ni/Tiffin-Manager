@@ -20,6 +20,10 @@ import * as types from './types.js';
     [types.SET_PROVIDER_MENU](state, response){
 
         state.provider.menu = response
+    },
+
+    [types.SET_FLASH](state, response){
+        state.flash_message = response.flash_message
     }
 }
 
