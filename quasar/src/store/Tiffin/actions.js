@@ -25,5 +25,10 @@ export const actions = {
     {
         var data = await API.processOrder(payload)
         context.commit('SET_FLASH',data)
+    },
+    async deliverOrder (context,payload)
+    {
+        var data = await API.deliverOrder(payload)
+        context.commit('SET_FLASH',data)
     }
 }

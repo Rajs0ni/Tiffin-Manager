@@ -112,3 +112,19 @@ export const processOrder = (payload) => {
         return data
     }).catch((error)=>(error))
 }
+
+export const deliverOrder = (payload) => {
+    return Axios.post('',{
+        namespace:"Order",
+        action:"save",
+        payload:{
+            customer_id:2,
+            quantity:payload.quantity,
+            price:payload.price,
+            time:payload.time
+    }
+    }).then((response) => {
+        var data  = response.data
+        return data
+    }).catch((error)=>(error))
+}

@@ -31,11 +31,6 @@
 <script>
 
 export default {
-    data(){
-        return{
-
-        }
-    },
     computed:{
         orders(){
             return this.$store.state.tiffin.provider.orders
