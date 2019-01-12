@@ -13,7 +13,8 @@
 
 <script>
     export default {
-        name: 'CustomerPageIndex'
+        name: 'CustomerPageIndex',
+        
     }
 </script>
 

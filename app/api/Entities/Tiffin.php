@@ -150,10 +150,6 @@ class Tiffin{
             $tiffin_with_menu = $tiffin->load(['menus' => function ($query) use ($day) {
                 $query->where('day', $day);
             }]);
-            $tiffin_with_menu->lunch_start = date("gA",strtotime($tiffin_with_menu->lunch_start));
-            $tiffin_with_menu->lunch_end = date("gA",strtotime($tiffin_with_menu->lunch_end));
-            $tiffin_with_menu->dinner_start = date("gA",strtotime($tiffin_with_menu->dinner_start));
-            $tiffin_with_menu->dinner_end = date("gA",strtotime($tiffin_with_menu->dinner_end));
             $tiffin_with_menu->menus->count()?
             $responseBody->setData($tiffin_with_menu)->setStatus(200) :
             $responseBody->setError("Menu Not found for the day ".$day)->setStatus(500);
