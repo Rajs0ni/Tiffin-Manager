@@ -1,9 +1,10 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout view="lHh Lpr lFf" >
     <q-layout-header reveal>
       <q-toolbar
         color="orange-8"
-
+        flat
+        class="no-shadow"
       >
         <q-btn
           flat
@@ -19,6 +20,7 @@
           Tiffin Manager
         </q-toolbar-title>
       </q-toolbar>
+  
     </q-layout-header>
 
     <q-layout-drawer
@@ -61,9 +63,3 @@ export default {
 }
 </script>
 
-<style>
-.q-toolbar
-{
-  box-shadow: 0px !important;
-}
-</style>
