@@ -3,7 +3,7 @@
         <q-card inline class="fit">
           <q-card-main>
              <q-item class="text-weight-light">
-                {{ menu.menus[0].dinner_desc}}
+                {{ data.menus[0].dinner_desc}}
              </q-item>
           </q-card-main>
           <q-card-separator />
@@ -11,59 +11,79 @@
             <div class="row">
               <q-item>
                   <q-item-main class="q-body-2 q-ml-md">Time to Order :</q-item-main>
-                  <q-item-side class="q-body-1">{{ menu.dinner_start | parseTime}} - {{ menu.dinner_end | parseTime}}</q-item-side>
+                  <q-item-side class="q-body-1">{{ data.dinner_start | parseTime}} - {{ data.dinner_end | parseTime }}</q-item-side>
               </q-item>
             </div>
             <div class="row">
                 <div class="col-6 text-left">
-                   <q-item class="q-body-2 on-right q-ml-md" >Quantity :<span class="on-right q-caption">{{ Dquantity }}</span></q-item>
+                   <q-item class="q-body-2 on-right q-ml-md" >Quantity :<span class="on-right q-caption">{{ Quantity }}</span></q-item>
                 </div>
                 <div class="col-6 text-right">
                     <q-btn-group outline class="q-pt-sm q-pb-sm on-left">
-                      <q-btn outline  size="sm" @click=Dquantity++ color="positive" icon="add" />
-                      <q-btn outline  size="sm" @click=Dquantity-- color="positive" icon="remove" />
+                      <q-btn outline  size="sm" @click="changeQuantity('incr',Quantity)" color="positive" icon="add" />
+                      <q-btn outline  size="sm" @click="changeQuantity('decr',Quantity)" color="positive" icon="remove" />
                     </q-btn-group>
                 </div>
             </div>
           </q-card-action>
           <q-card-separator />
           <div class="footer text-center ">
-              <div class="q-my-sm"> <q-btn outline color="positive" :disabled="active" @click="order('dinner', menu.price, Dquantity)" label="Order"/></div> 
+              <div class="q-my-sm"> 
+                  <q-btn outline color="positive" :disabled="active" @click="order('dinner',data.price)" label="Order"/>
+              </div> 
           </div>
       </q-card>
     </q-collapsible>
 </template>
 
 <script>
+import * as time from 'src/store/Tiffin/time.js'
+
 export default {
  name:'Dinner',
-  data(){
+ data(){
      return{
-         Dquantity:1,
-         active:false
+        Quantity:1,
+        active:false
      }
  },
- computed:{
-      menu:function(){
+ computed:{ 
+    data:function(){
       return this.$store.state.tiffin.customer.menu
     }
  },
- mounted()
- {
-     this.canOrderOrNot()
+ beforeMount(){
+    this.canOrderOrNot()
  },
  methods:{
     canOrderOrNot()
     {
         var date = new Date();
         var current_time = date.getHours();
-        var dinner_end = parseInt(this.$store.state.tiffin.customer.menu.dinner_end)
+        var dinner_end = parseInt(this.$q.localStorage.get.item(time.DINNER_END))
         if( current_time > (dinner_end-1) )
         {
             this.active = !this.active
         }
+    },
+
+    changeQuantity(operation, value)
+    {
+        operation == 'incr' ?
+        this.Quantity = value>=4 ? 4 : ++this.Quantity :
+        this.Quantity = value<=1 ? 1 : --this.Quantity
+    },
+
+    order(time,price)
+    {
+        this.$store.dispatch('tiffin/saveOrder', {
+          quantity:this.Quantity,
+          price:price,
+          time:time
+        })
     }
  }
+ 
 }
 </script>
 

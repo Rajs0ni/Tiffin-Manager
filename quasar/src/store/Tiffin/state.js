@@ -1,4 +1,4 @@
-export const state = {
+export default () => ({
   customer:{
     menu:{},
     orders:[]
@@ -11,4 +11,5 @@ export const state = {
   },
   
   flash_message:''
-}
+})
+
