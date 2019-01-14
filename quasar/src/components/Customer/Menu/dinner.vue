@@ -50,15 +50,19 @@ export default {
  },
  mounted()
  {
-    var date = new Date();
-    var current_time = date.getHours();
-    var dinner_start = parseInt(this.$store.state.tiffin.customer.menu.dinner_start)
-    var dinner_end = parseInt(this.$store.state.tiffin.customer.menu.dinner_end)
-    if( current_time > dinner_end )
+     this.canOrderOrNot()
+ },
+ methods:{
+    canOrderOrNot()
     {
-      this.active = !this.active
+        var date = new Date();
+        var current_time = date.getHours();
+        var dinner_end = parseInt(this.$store.state.tiffin.customer.menu.dinner_end)
+        if( current_time > (dinner_end-1) )
+        {
+            this.active = !this.active
+        }
     }
-
  }
 }
 </script>
