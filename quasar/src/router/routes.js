@@ -10,7 +10,8 @@ const routes = [
         children:
           [
             { path: '', component: () => import('components/Customer/Menu/menu.vue') },
-            { path: 'orders', component: () => import('components/Customer/Order/list.vue') }
+            { path: 'orders', component: () => import('components/Customer/Order/list.vue') },
+            { path: 'orders/:id', component: () => import('components/Customer/Order/order.vue') }
           ]
       },
       { 

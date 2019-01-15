@@ -6,21 +6,20 @@
                 <q-btn outline color="orange-8" style="width:150px" label="Orders" @click="$router.push('/customer/orders')" />
             </q-btn-group>
         </div>
+        <flash></flash>
         <router-view /> 
   </q-page>
 
 </template>
 
 <script>
-    export default {
-        name: 'CustomerPageIndex',
-        
-    }
+import flash from 'components/flash_message.vue'
+export default {
+    name: 'CustomerPageIndex',
+    components:{
+    flash
+  }
+}
 </script>
 
-<style scoped>
-    .q-tabs{
-    border-radius:0px;
-    }
-</style>
 

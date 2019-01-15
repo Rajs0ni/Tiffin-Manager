@@ -3,55 +3,53 @@ import * as types from './types.js';
 
 export const actions = {
 
-    filterResponse(response){
-        // var message = response.flash_message
-        // var type = response.status !== 200 ? 'negative' : 'positive'
-        // setFlash({type,message})
-        // return response.data
-        alert(response.status)
+     async filterResponse({commit, dispatch},response){
+        var type = response.status !== 200 ? 'negative' : 'positive'
+        var icon = type == 'negative' ? 'cloud' : 'done';
+        var message = response.flash_message
+        dispatch('setFlash',{icon,type,message})
+        return response.data
     },
 
     async setProviderOrders({commit}){
         var response = await API.getProviderOrders()
-        // response = filterResponse(response)
         commit(types.SET_PROVIDERS_ALL_ORDERS, response.data)
     },
 
     async setCustomerOrders({commit}){
         var response = await API.getCustomerOrders()
-        // response = filterResponse(response)
         commit(types.SET_CUSTOMERS_ALL_ORDERS, response.data)
     },
 
-    async setCustomerMenu({commit}, payload){
+    async setCustomerMenu({commit, dispatch}, payload){
         var response = await API.getCustomerMenu(payload)
-            // filterResponse(response)
-       
+        // response = dispatch('filterResponse',response)
         commit(types.SET_CUSTOMER_MENU, response.data)
     },
 
     async setProviderMenu({commit}, payload){
         var response = await API.getProviderMenu(payload)
-        // response = filterResponse(response)
         commit(types.SET_PROVIDER_MENU, response.data)
     },
 
-    async processOrder({commit}, payload)
+    async processOrder({commit, dispatch}, payload)
     {
-        var response = await API.processOrder(payload)
-        // response = filterResponse(response)
-        commit(types.SET_FLASH, response)
+        var response = await API.processOrder(payload)   
+        dispatch('filterResponse',response)
+        dispatch('setProviderOrders') 
     },
 
-    async saveOrder({commit}, payload)
+    async saveOrder({commit, dispatch}, payload)
     {
         var response = await API.saveOrder(payload)
-        // response = filterResponse(response)
-        commit(types.SET_FLASH, response)
+        dispatch('filterResponse',response)
     },
 
-    // async setFlash({commit}, payload)
-    // {
-    //     console.log(payload.type)
-    // }
+    async setFlash({commit}, payload)
+    {
+        commit(types.SET_FLASH, payload)
+        setTimeout(function(){
+            commit(types.RESET_FLASH) 
+        },3000)
+    }
 }

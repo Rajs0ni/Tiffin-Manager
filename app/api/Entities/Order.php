@@ -31,11 +31,12 @@ class Order{
         catch(ModelNotFoundException $e)
         {
             $responseBody->setError("Model Not Found")->setStatus(500)
-                         ->setFlash("Orders Not Found");
+                         ->setFlash("No Orders Found Yet");
         }
         catch(\Exception $e)
         {
-            $responseBody->setError("Orders Not Found")->setStatus(500);
+            $responseBody->setError("Orders Not Found")->setStatus(500)
+                         ->setFlash("No Orders Found Yet");
         }
     }
 
@@ -62,11 +63,11 @@ class Order{
         catch(ModelNotFoundException $e)
         {
             $responseBody->setError("Model Not Found")->setStatus(500)
-                         ->setFlash("Order Not Found");
+                         ->setFlash("No Such Order Found !!");
         }
         catch(\Exception $e)
         {
-            $responseBody->setError("Order Not Found")->setStatus(500);
+            $responseBody->setError("No Such Order Found !!")->setStatus(500);
         }
     }
 
@@ -95,12 +96,12 @@ class Order{
         catch(ModelNotFoundException $e)
         {
             $responseBody->setError("Model Not Found")->setStatus(500)
-                         ->setFlash("Order can not be placed");
+                         ->setFlash("Order can not be placed !!");
         }
         catch(\Exception $e)
         {
             $responseBody->setError($e->getMessage())->setStatus(500)
-                         ->setFlash("Order can not be placed");
+                         ->setFlash("Order can not be placed !!");
         }
     }
 
@@ -116,18 +117,18 @@ class Order{
                 $order = $user->orders('provider_id')->findOrFail($order_id);
                 $order->status = !$order->status;
                 $order->save();
-                $responseBody->setFlash("Order delivered")->setStatus(200);    
+                $responseBody->setFlash("Order has been processed !!")->setStatus(200);    
             }
         }
         catch(ModelNotFoundException $e)
         {
             $responseBody->setError("Model Not Found")->setStatus(500)
-                         ->setFlash("Order can't be delivered");
+                         ->setFlash("Order can't be processed !!");
         }
         catch(\Exception $e)
         {
             $responseBody->setError("Order Not Found")->setStatus(500)
-                         ->setFlash("Order can't be delivered");
+                         ->setFlash("Order can't be processed !!");
         }
     }
 

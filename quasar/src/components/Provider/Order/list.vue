@@ -1,7 +1,6 @@
 <template>
 <div class="row">
-    <div class="col-12">
-        <p>{{flash_message}}</p>
+    <div class="col-12" v-if="orders">
         <q-list highlight separator>
             <div class="col-12"  v-for="order in orders" :key="order.index" >
                 <q-list-header v-if="order.key ==0 ">Undelivered</q-list-header>
@@ -25,6 +24,11 @@
             </div>
         </q-list>
     </div>
+    <div v-else class="col-12 text-center">
+        <p class="text-weight-medium q-mt-xl text-warning">
+           No orders yet.
+        </p>
+    </div>
 </div>
 </template>
 
@@ -34,10 +38,6 @@ export default {
     computed:{
         orders(){
             return this.$store.state.tiffin.provider.orders
-        },
-        flash_message()
-        {
-            return this.$store.state.tiffin.flash_message
         }
     },
     mounted(){
@@ -46,11 +46,9 @@ export default {
     methods:{
         deliverOrder(id)
         {
-           
             this.$store.dispatch('tiffin/processOrder',{
             order_id:id
-        }) 
-          this.$store.dispatch('tiffin/setProviderOrders')
+            }) 
         }
     }
 }

@@ -1,6 +1,6 @@
 <template>
 <div class="row">
-    <div class="col-12">
+    <div class="col-12" v-if="orders">
         <q-list highlight separator>
             <div class="col-12"  v-for="order in orders" :key="order.index" >
                 <q-list-header v-if="order.key == 0" color="negative">Undelivered</q-list-header>
@@ -16,6 +16,11 @@
                     </q-item>
             </div>
         </q-list>
+    </div>
+    <div v-else class="col-12 text-center">
+       <p class="text-weight-medium q-mt-xl text-warning">
+           No orders yet. <a href="/"> Order Now.</a>
+        </p>
     </div>
 </div>
 </template>
