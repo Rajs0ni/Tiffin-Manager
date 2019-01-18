@@ -1,46 +1,50 @@
 <template>
-  <q-table
-    :data="tableData"
-    :columns="columns"
-    :filter="filter"
-    :visible-columns="visibleColumns"
-    :separator="separator"
-    row-key="name"
-    color="secondary"
-  >
-    <template slot="top-left" >
-      <q-search
-        hide-underline
-        color="secondary"
-        v-model="filter"
-        class="col-6"
-      />
-    </template>
-    <template slot="top-right" slot-scope="props">
-      <q-table-columns
-        color="secondary"
-        class="q-mr-sm"
-        v-model="visibleColumns"
-        :columns="columns"
-      />
-      <q-select
-        color="secondary"
-        v-model="separator"
-        :options="[
-          { label: 'Horizontal', value: 'horizontal' },
-          { label: 'Vertical', value: 'vertical' },
-          { label: 'Cell', value: 'cell' },
-          { label: 'None', value: 'none' }
-        ]"
-        hide-underline
-      />
-      <q-btn
-        flat round dense
-        :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
-        @click="props.toggleFullscreen"
-      />
-    </template>
-  </q-table>
+  
+    <q-card class="q-mx-sm q-mt-xl">
+      <q-card-title class="bg-info text-white">
+          Order Id : 1
+      </q-card-title>    
+        <q-card-separator />
+      
+      <q-card-main>
+          <q-item>
+            <q-item-main class="on-right">Tiffin Plan :</q-item-main>
+            <q-item-side class="on-left">Light Bite</q-item-side>
+          </q-item>
+          <q-card-separator />
+          <q-item>
+            <q-item-main class="on-right">Quantity :</q-item-main>
+            <q-item-side class="on-left">1</q-item-side>
+          </q-item>
+           <q-card-separator />
+           <q-item>
+            <q-item-main class="on-right">Price :</q-item-main>
+            <q-item-side class="on-left">Rs. 65</q-item-side>
+          </q-item>
+          <q-card-separator />
+           <q-item>
+            <q-item-main class="on-right">Date</q-item-main>
+            <q-item-side class="on-left">18/01/2019</q-item-side>
+          </q-item>
+          <q-card-separator />
+           <q-item>
+            <q-item-main class="on-right">Total Amount</q-item-main>
+            <q-item-side class="on-left">Rs. 65</q-item-side>
+          </q-item>
+          <q-card-separator />
+           <q-item>
+            <q-item-main class="on-right">Status</q-item-main>
+            <q-item-side class="on-left">Pending</q-item-side>
+          </q-item>
+          
+      </q-card-main>
+      <q-card-separator />
+      <q-card-actions>
+        <q-btn flat>Action 1</q-btn>
+        <q-btn flat>Action 2</q-btn>
+      </q-card-actions>
+    </q-card>
+ 
 </template>
 
 <script>
@@ -50,6 +54,12 @@ export default {
     visibleColumns: ['desc', 'fat', 'carbs', 'protein', 'sodium', 'calcium', 'iron'],
     separator: 'horizontal',
     filter: ''
-  })
+  }),
+  mounted(){
+    if(this.$route.params.id)
+    {
+      alert(this.$route.params.id);
+    }
+  }
 }
 </script>

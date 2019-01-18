@@ -5,7 +5,7 @@ export const actions = {
 
      async filterResponse({commit, dispatch},response){
         var type = response.status !== 200 ? 'negative' : 'positive'
-        var icon = type == 'negative' ? 'cloud' : 'done';
+        var icon = type == 'negative' ? 'error' : 'done';
         var message = response.flash_message
         dispatch('setFlash',{icon,type,message})
         return response.data

@@ -78,15 +78,29 @@ class Order{
             $customer_id = $requestBody->payload['customer_id'];
             $customer = User::findOrFail($customer_id);
             $this->validate($requestBody);
-            $order = new OrderModel;
             $time = $requestBody->payload['time'];
-            $order->provider_id = $customer->assoc_provider;
-            $order->tiffin_id = $customer->tiffin_plan;
+            $data = $requestBody->payload['data'];
+            $tiffin = Tiffin::findOrFail($data['id']);
+            $order = new OrderModel;
+            // $responseBody->setData(date('G',strtotime($tiffin->lunch_end)));
+            $order->provider_id = $tiffin->provider_id;
+            $order->tiffin_id = $tiffin->id;
             $order->no_of_tiffin = $requestBody->payload['quantity'];
-            $time == 'lunch' ? $order->is_lunch = true : $order->is_dinner = true;
-            $order->price = $requestBody->payload['price'];
-            $order->total_amount = $requestBody->payload['quantity'] * $requestBody->payload['price'];
+            if($time<=date('G',strtotime($tiffin->lunch_end)))
+                $order->is_lunch = true;
+            else
+                $order->is_dinner = true;
+            $order->price = $tiffin->price;
+            $order->total_amount = $requestBody->payload['quantity'] * $tiffin->price;
             $customer->orders('customer_id')->save($order);
+            // $customer->orders('customer_id')->save($order);
+            // $order->provider_id = $customer->assoc_provider;
+            // $order->tiffin_id = $customer->tiffin_plan;
+            // $order->no_of_tiffin = $requestBody->payload['quantity'];
+            // $time == 'lunch' ? $order->is_lunch = true : $order->is_dinner = true;
+            // $order->price = $requestBody->payload['price'];
+            // $order->total_amount = $requestBody->payload['quantity'] * $requestBody->payload['price'];
+            // $customer->orders('customer_id')->save($order);
 
             if($order)
             {
@@ -135,7 +149,7 @@ class Order{
     public function validate(RequestBody $requestBody)
     {
         $validator = Validator::make($requestBody->payload, [
-            'quantity' => 'required | numeric | min:1 | max:5',
+            'quantity' => 'required | numeric | min:1 | max:4',
         ]);
 
         if ($validator->fails()) {

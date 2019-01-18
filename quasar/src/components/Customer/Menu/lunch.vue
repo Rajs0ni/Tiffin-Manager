@@ -29,7 +29,7 @@
           <q-card-separator />
           <div class="footer text-center ">
               <div class="q-mt-sm q-mb-sm"> 
-                  <q-btn outline color="positive" :disabled="active" label="Order" @click="order(data.price, Quantity)"/>
+                  <q-btn outline color="positive" :disabled="active" label="Order" @click="order(data)"/>
               </div> 
           </div>
         </q-card>
@@ -74,12 +74,14 @@ export default {
         this.Quantity = value<=1 ? 1 : --this.Quantity
     },
 
-    order(time,price)
+    order(data)
     {
+        var date = new Date();
+        var current_time = date.getHours();
         this.$store.dispatch('tiffin/saveOrder', {
           quantity:this.Quantity,
-          price:price,
-          time:time
+          data:data,
+          time:current_time
         })
     }
  }

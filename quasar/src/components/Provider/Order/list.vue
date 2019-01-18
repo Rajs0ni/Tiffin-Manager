@@ -3,8 +3,8 @@
     <div class="col-12" v-if="orders">
         <q-list highlight separator>
             <div class="col-12"  v-for="order in orders" :key="order.index" >
-                <q-list-header v-if="order.key ==0 ">Undelivered</q-list-header>
-                 <q-list-header v-else>Delivered</q-list-header>
+                <q-list-header v-if="order.key ==0" style="color:red">Undelivered</q-list-header>
+                 <q-list-header v-else style="color:green">Delivered</q-list-header>
                     <q-item highlight  v-for="record in order.value" :key="record.index">
                         <q-item-side left color="grey-10">
                             <q-item-tile label>Order ID&nbsp;:&nbsp;<span>#{{ record.id}}</span></q-item-tile>
