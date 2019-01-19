@@ -7,27 +7,27 @@
             </q-item>     
           </q-card-main>
           <q-card-separator />
-          <q-card-action>
-            <div class="row">
-              <q-item>
-                  <q-item-main class="q-body-2 q-ml-md">Time to Order :</q-item-main>
+          <q-card-actions>
+           <div class="row fit">
+              <q-item class="q-ml-sm">
+                  <q-item-main class="q-body-2 ">Time to Order :</q-item-main>
                   <q-item-side class="q-body-1">{{ data.lunch_start | parseTime}} - {{ data.lunch_end | parseTime}}</q-item-side>
               </q-item>
-            </div>
-            <div class="row">
-                <div class="col-6 text-left">
-                    <q-item class="q-body-2 on-right q-ml-md" >Quantity :<span class="on-right q-caption">{{ Quantity }}</span></q-item>
+         </div>
+         <div class="row fit">
+                <div class="col-6">
+                    <q-item class="q-body-2 q-ml-sm">Quantity :<span class="on-right q-caption">{{ Quantity }}</span></q-item>
                 </div>
                 <div class="col-6 text-right">
-                    <q-btn-group outline class="q-pt-sm q-pb-sm on-left">
-                      <q-btn outline  size="sm" @click="changeQuantity('incr',Quantity)" color="positive" icon="add" />
-                      <q-btn outline  size="sm" @click="changeQuantity('decr',Quantity)" color="positive" icon="remove" />
+                    <q-btn-group outline class="q-pt-sm on-left">
+                      <q-btn outline  size="sm"  @click="changeQuantity('incr',Quantity)" color="positive" icon="add" style="margin-right:-1px" />
+                      <q-btn outline  size="sm"  @click="changeQuantity('decr',Quantity)" color="positive" icon="remove" />
                     </q-btn-group>
                 </div>
-            </div>
-          </q-card-action>
+          </div>
+          </q-card-actions>
           <q-card-separator />
-          <div class="footer text-center ">
+          <div class="text-center">
               <div class="q-mt-sm q-mb-sm"> 
                   <q-btn outline color="positive" :disabled="active" label="Order" @click="order(data)"/>
               </div> 

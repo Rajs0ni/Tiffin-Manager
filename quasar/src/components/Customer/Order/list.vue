@@ -1,13 +1,13 @@
 <template>
 <div class="row">
     <div class="col-12" v-if="orders">
-        <q-list highlight separator>
+        <q-list highlight no-border>
             <div class="col-12"  v-for="order in orders" :key="order.index" >
                 <q-list-header v-if="order.key == 0" style="color:red">Undelivered</q-list-header>
                  <q-list-header v-else style="color:green">Delivered</q-list-header>
-                    <q-item highlight v-for="record in order.value" :key="record.index" @click.native="getOrder(record)">
+                    <q-item highlight class="cursor-pointer"  v-for="record in order.value" :key="record.index" @click.native="getOrder(record)">
                         <q-item-main>
-                            <q-item-tile label>Order ID&nbsp;:&nbsp;<span>#{{ record.id }}</span></q-item-tile>
+                            <q-item-tile label>Order ID&nbsp;:&nbsp;<span>{{ record.id }}</span></q-item-tile>
                             <q-item-tile label>Quantity&nbsp;:&nbsp;<span >{{ record.no_of_tiffin }}</span></q-item-tile>
                         </q-item-main>
                         <q-item-side right> 
@@ -38,13 +38,10 @@ export default {
             this.$router.push(`/customer/orders/${order.id}`)
         }
     },
-    filters:{
-        status(value){
-            return value?'Delivered':'Pending';
-        }
-    },
     mounted(){
-        this.$store.dispatch('tiffin/setCustomerOrders')
+        this.$store.dispatch('tiffin/setCustomerOrders',{
+            user_id:2
+        })
     }
 }
 </script>

@@ -19,7 +19,8 @@ const routes = [
         children:
           [
             { path: '', component: () => import('components/Provider/Menu/menu.vue') },
-            { path: 'orders', component: () => import('components/Provider/Order/list.vue') }
+            { path: 'orders', component: () => import('components/Provider/Order/list.vue') },
+            { path: 'orders/:id', component: () => import('components/Provider/Order/order.vue') }
           ]
       },
     ]

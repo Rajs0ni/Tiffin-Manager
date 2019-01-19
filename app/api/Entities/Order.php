@@ -55,7 +55,7 @@ class Order{
             $data = [
                 'customer_name' => $customer_name,
                 'tiffin_plan' => $tiffin_name,
-                'order' => $order
+                'record' => $order
             ];
 
             $responseBody->setData($data)->setStatus(200);

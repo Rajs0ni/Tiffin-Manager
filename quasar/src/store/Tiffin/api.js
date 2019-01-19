@@ -2,45 +2,32 @@ import {Axios} from 'plugins/axios.js'
 
 export const API = {
     
- getProviderOrders(){
+ getOrders(payload){
     return Axios.post('',{
         namespace:'Order',
         action:'list',
         payload:{
-          user_id:1
+          user_id:payload.user_id
         }
     })
     .then((response) => (response.data))
     .catch((error) => (error))
 },
 
- getCustomerOrders(){
+ getOrder(payload){
     return Axios.post('',{
         namespace:'Order',
-        action:'list',
+        action:'get',
         payload:{
-          user_id:2
+           user_id:payload.user_id,
+           order_id:payload.order_id
         }
     })
     .then((response) => (response.data))
     .catch((error) => (error))
 },
 
- getCustomerMenu(payload){
-    return Axios.post('',{
-        namespace:"Tiffin",
-        action:"getMenu",
-        payload:{
-            provider_id:1,
-            tiffin_id:1,
-            day:payload.menuDay
-        }
-    })
-    .then((response) => (response.data))
-    .catch((error) => (error))
-},
-
- getProviderMenu(payload){
+ getMenu(payload){
     return Axios.post('',{
         namespace:"Tiffin",
         action:"getMenu",
