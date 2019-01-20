@@ -1,22 +1,11 @@
 
 <template>
   <q-page >
-        <div class="row full-width ">
-            <q-tabs class="full-width" color="orange-8">
-                    <q-route-tab
-                    to="/provider"
-                    name="tab-1"
-                    exact
-                    slot="title"
-                    label="Menu"
-                    />
-                    <q-route-tab
-                    to="/provider/orders"
-                    exact
-                    slot="title"
-                    label="Orders"
-                    />
-            </q-tabs>
+        <div class="row full-width justify-center">
+            <q-btn-group outline class=" q-pt-sm q-pb-sm">
+                <q-btn outline color="orange-8" style="width:150px" label="Menu" @click="$router.push('/provider')" />
+                <q-btn outline color="orange-8" style="width:150px" label="Orders" @click="$router.push('/provider/orders')" />
+            </q-btn-group>
         </div>
         <router-view /> 
   </q-page>

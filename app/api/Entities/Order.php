@@ -19,8 +19,13 @@ class Order{
             $user = User::findOrFail($user_id);
             $column = $user->is_provider == 1 ? 'provider_id' : 'customer_id';
             $orders = $user->orders($column)->get();
+            $orders = $orders->groupBy('status');
+            foreach($orders as $key => $value)
+            {
+                $data[] = ['key' => $key,'value' => $value];
+            }
             !$orders->isEmpty() ?
-            $responseBody->setData($orders)->setStatus(200) :
+            $responseBody->setData($data)->setStatus(200) :
             $responseBody->setError('Orders Not Found')->setStatus(500);
         }
         catch(ModelNotFoundException $e)

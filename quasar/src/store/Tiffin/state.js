@@ -6,8 +6,9 @@ export const state = {
 
   provider:{
     menu:{},
-    orders:[]
+    orders:[],
+    
   },
-
+  
   flash_message:''
 }

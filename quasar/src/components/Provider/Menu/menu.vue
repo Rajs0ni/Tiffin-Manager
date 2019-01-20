@@ -1,5 +1,5 @@
 <template>
-<q-page padding>
+<q-page >
 <q-card inline class="full-width">
     <q-card-title>
     <q-item>

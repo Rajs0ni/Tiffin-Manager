@@ -1,6 +1,7 @@
 import {Axios} from 'plugins/axios.js';
 
-export const parseAPIResponse=function(response) {
+export const API = {
+    parseAPIResponse(response){
     if(response.data.status==200) {
         setAPIFlashMessage(
             response.data.flash_message,
@@ -14,9 +15,9 @@ export const parseAPIResponse=function(response) {
         )
     }
     return response.data
-}
+},
 
-export const setAPIFlashMessage = function(message,message_type) {
+  setAPIFlashMessage(message,message_type){
     store.dispatch (type.SET_FLASH_MESSAGE,{
         message:message,
         message_type:message_type
@@ -24,9 +25,9 @@ export const setAPIFlashMessage = function(message,message_type) {
     setTimeout(function(){
         store.dispatch(type.RESET_FLASH_MESSAGE)
     },4000)
-}
+},
 
-export const saveProduct=function(form_data){
+ saveProduct(form_data){
     return axios
         .post(BASE_API_URL,{
             namespace:'ProductApi',
@@ -41,9 +42,9 @@ export const saveProduct=function(form_data){
             
         });
     
-}
+},
 
-export const getProviderOrders = () => {
+ getProviderOrders(){
     return Axios.post('',{
         namespace:'Order',
         action:'list',
@@ -54,9 +55,9 @@ export const getProviderOrders = () => {
         var data = response.data.data
         return data;
     }).catch((error)=>(error));
-}
+},
 
-export const getCustomerOrders = () => {
+ getCustomerOrders(){
     return Axios.post('',{
         namespace:'Order',
         action:'list',
@@ -67,9 +68,9 @@ export const getCustomerOrders = () => {
         var data  = response.data.data
         return data
     }).catch((error)=>(error))
-}
+},
 
-export const getCustomerMenu = (payload) => {
+ getCustomerMenu(payload){
     return Axios.post('',{
         namespace:"Tiffin",
         action:"getMenu",
@@ -82,9 +83,9 @@ export const getCustomerMenu = (payload) => {
         var data  = response.data.data
         return data
     }).catch((error)=>(error))
-}
+},
 
-export const getProviderMenu = (payload) => {
+ getProviderMenu(payload){
     return Axios.post('',{
         namespace:"Tiffin",
         action:"getMenu",
@@ -97,4 +98,36 @@ export const getProviderMenu = (payload) => {
         var data  = response.data.data
         return data
     }).catch((error)=>(error))
+},
+
+ processOrder(payload){
+    return Axios.post('',{
+        namespace:"Order",
+        action:"deliver",
+        payload:{
+            user_id:1,
+            order_id:payload.order_id
+        }
+    }).then((response) => {
+        var data  = response.data
+        return data
+    }).catch((error)=>(error))
+},
+
+ deliverOrder(payload){
+    return Axios.post('',{
+        namespace:"Order",
+        action:"save",
+        payload:{
+            customer_id:2,
+            quantity:payload.quantity,
+            price:payload.price,
+            time:payload.time
+    }
+    }).then((response) => {
+        var data  = response.data
+        return data
+    }).catch((error)=>(error))
+}
+
 }
