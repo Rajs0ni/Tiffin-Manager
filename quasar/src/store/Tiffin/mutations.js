@@ -22,8 +22,22 @@ import * as types from './types.js';
         state.provider.menu = response
     },
 
+    [types.SET_CUSTOMER_ORDER](state,response)
+    {
+        state.customer.order = response
+    },
+
+    [types.SET_PROVIDER_ORDER](state,response)
+    {
+        state.provider.order = response
+    },
+
     [types.SET_FLASH](state, response){
-        state.flash_message = response.flash_message
+        state.flash_message = response
+    },
+
+    [types.RESET_FLASH](state){
+        state.flash_message = null
     }
 }
 

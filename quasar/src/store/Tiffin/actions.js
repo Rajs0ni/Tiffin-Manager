@@ -1,35 +1,64 @@
-import * as types from './types.js'
-import { API } from './api.js';
+import {API} from './api.js';
+import * as types from './types.js';
 
 export const actions = {
 
-    async setProviderOrders(context){
-        var data = await API.getProviderOrders()
-        context.commit(types.SET_PROVIDERS_ALL_ORDERS, data)
+    async filterResponse({commit, dispatch},response){
+        var type = response.status !== 200 ? 'negative' : 'positive'
+        var icon = type == 'negative' ? 'error' : 'done';
+        var message = response.flash_message
+        dispatch('setFlash',{icon,type,message})
+        return response.data
     },
 
-    async setCustomerOrders(context){
-        var data = await API.getCustomerOrders()
-        context.commit(types.SET_CUSTOMERS_ALL_ORDERS, data)
+    async setProviderOrders({commit},payload){
+        var response = await API.getOrders(payload)
+        commit(types.SET_PROVIDERS_ALL_ORDERS, response.data)
     },
 
-    async setCustomerMenu(context,payload){
-        var data = await API.getCustomerMenu(payload)
-        context.commit(types.SET_CUSTOMER_MENU, data)
+    async setCustomerOrders({commit},payload){
+        var response = await API.getOrders(payload)
+        commit(types.SET_CUSTOMERS_ALL_ORDERS, response.data)
     },
 
-    async setProviderMenu(context,payload){
-        var data = await API.getProviderMenu(payload)
-        context.commit(types.SET_PROVIDER_MENU, data)
+    async setCustomerMenu({commit, dispatch}, payload){
+        var response = await API.getMenu(payload)
+        // response = dispatch('filterResponse',response)
+        commit(types.SET_CUSTOMER_MENU, response.data)
     },
-    async processOrder (context,payload)
+    
+    async setProviderMenu({commit}, payload){
+        var response = await API.getMenu(payload)
+        commit(types.SET_PROVIDER_MENU, response.data)
+    },
+    
+    async setCustomerOrder({commit},payload){
+        var response = await API.getOrder(payload)
+        commit(types.SET_CUSTOMER_ORDER, response.data)
+    },
+    
+    async setProviderOrder({commit},payload){
+        var response = await API.getOrder(payload)
+        commit(types.SET_PROVIDER_ORDER, response.data)
+    },
+
+    async processOrder({commit, dispatch}, payload)
     {
-        var data = await API.processOrder(payload)
-        context.commit(types.SET_FLASH, data)
+        var response = await API.processOrder(payload)   
+        dispatch('filterResponse',response)
     },
-    async deliverOrder (context,payload)
+
+    async saveOrder({commit, dispatch}, payload)
     {
-        var data = await API.deliverOrder(payload)
-        context.commit(types.SET_FLASH, data)
+        var response = await API.saveOrder(payload)
+        dispatch('filterResponse',response)
+    },
+
+    async setFlash({commit}, payload)
+    {
+        commit(types.SET_FLASH, payload)
+        setTimeout(function(){
+            commit(types.RESET_FLASH) 
+        },3000)
     }
 }

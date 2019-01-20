@@ -1,34 +1,38 @@
 <template>
-<q-page >
-<q-card inline class="full-width">
-    <q-card-title>
-    <q-item>
-    <q-item-main>
-      <q-item-tile label>Provider</q-item-tile>
-      <q-item-tile sublabel>Subhead</q-item-tile>
-    </q-item-main>
-  </q-item>
-    </q-card-title>
-    
-    <q-card-main>
-         <q-item>
-        Moong Sebut, Green Veg, Plain Rice, Tava Roti, Green Salad
-         </q-item>
-    </q-card-main>
-     <q-card-separator />
-    <!-- <q-card-action class="flex flex-center">
-        <q-btn round dense color="positive" >+</q-btn>
-        <h6 flat color="primary" size="md" class="q-pl-md">Quantity</h6>
-        <q-btn round dense color="grey-5" class="q-ml-md">-</q-btn>
-    </q-card-action> -->
-</q-card>
-</q-page>
+    <q-page >
+      <q-pull-to-refresh :handler="refresher">
+        <q-list separator no-border v-if="data">
+          <q-collapsible icon="wb_sunny" label="Lunch" opened>
+              <q-card inline class="fit">
+                <q-card-main>
+                  <q-item class="text-weight-light">
+                        {{ data.menus[0].lunch_desc}}
+                  </q-item>     
+                </q-card-main>
+              </q-card>
+          </q-collapsible>
+          <q-card-separator />
+          <q-collapsible icon="brightness_3" label="Dinner" opened>
+              <q-card inline class="fit">
+                <q-card-main>
+                  <q-item class="text-weight-light">
+                        {{ data.menus[0].dinner_desc}}
+                  </q-item>     
+                </q-card-main>
+              </q-card>
+          </q-collapsible>
+        </q-list>
+        <div v-else class="col-12 text-center">
+          <p class="text-weight-medium q-mt-xl text-negative">No menu for the day.</p>
+        </div>
+      </q-pull-to-refresh>
+    </q-page>
 </template>
 
 <script>
 export default {
   computed:{
-    menu:function(){
+    data:function(){
       return this.$store.state.tiffin.provider.menu
     }
   },
@@ -36,6 +40,13 @@ export default {
     this.getTodayMenu()
   },
   methods:{
+    refresher(done)
+    {
+      setTimeout(()=>{
+        done()
+        this.getTodayMenu()
+      },1000)
+    },
     getTodayMenu(){
       var today = new Date();
       var day = today.getDay(); 
