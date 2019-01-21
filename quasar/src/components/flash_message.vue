@@ -1,7 +1,7 @@
 <template>
 
 <div class="row justify-center">
-    <div class="text-center absolute" v-if="flash_message">
+    <div class="text-center absolute flex-center" v-if="flash_message">
      <q-slide-transition>
        <q-alert
         :color="flash_message.type"

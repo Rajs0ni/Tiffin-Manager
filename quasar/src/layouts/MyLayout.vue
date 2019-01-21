@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf" >
-    <q-layout-header reveal>
+    <q-layout-header reveal color="orange-8">
       <q-toolbar
         color="orange-8"
       >
@@ -13,12 +13,18 @@
         >
           <q-icon name="menu" />
         </q-btn>
-
         <q-toolbar-title>
           Tiffin Manager
         </q-toolbar-title>
-      </q-toolbar>
-      
+        </q-toolbar>
+        <div class="q-tabs flex no-wrap overflow-hidden q-tabs-position-top q-tabs-normal">
+          <div :class="[$q.screen.gt.sm ? 'q-tabs-align-left' :'q-tabs-align-justify' ]">
+            <q-tabs class="fit q-tabs-scroller" color="orange-8">
+              <q-route-tab slot="title" :to="menuRoute" replace label="Menu" />
+              <q-route-tab slot="title" :to="orderRoute" replace label="Orders" />
+            </q-tabs>
+          </div>
+        </div>
     </q-layout-header>
 
     <q-layout-drawer
@@ -53,6 +59,21 @@
 
 export default {
   name: 'MyLayout',
+  computed: {
+    menuRoute()
+    {
+      var url = this.$route.path
+      url.indexOf('customer')
+      return url.indexOf('customer') != -1 ? '/customer' : '/provider'
+
+    },
+    orderRoute()
+    {
+      var url = this.$route.path
+      url.indexOf('customer')
+      return  url.indexOf('customer') != -1 ? '/customer/orders' : '/provider/orders'
+    }
+  },
   data () {
     return {
       leftDrawerOpen: this.$q.platform.is.desktop

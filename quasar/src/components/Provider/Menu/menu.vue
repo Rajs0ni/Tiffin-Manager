@@ -1,7 +1,7 @@
 <template>
     <q-page >
       <q-pull-to-refresh :handler="refresher">
-        <q-list separator no-border v-if="data">
+        <q-list separator no-border v-if="data" class="q-mt-sm">
           <q-collapsible icon="wb_sunny" label="Lunch" opened>
               <q-card inline class="fit">
                 <q-card-main>

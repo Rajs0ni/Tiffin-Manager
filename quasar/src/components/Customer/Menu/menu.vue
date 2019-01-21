@@ -1,7 +1,7 @@
 <template>
   <q-page >
     <q-pull-to-refresh :handler="refresher">
-      <q-list separator no-border>
+      <q-list separator no-border class="q-mt-sm">
         <lunch></lunch>
         <dinner></dinner>
       </q-list>

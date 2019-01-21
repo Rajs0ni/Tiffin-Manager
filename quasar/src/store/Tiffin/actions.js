@@ -4,11 +4,13 @@ import * as types from './types.js';
 export const actions = {
 
     async filterResponse({commit, dispatch},response){
+
         var type = response.status !== 200 ? 'negative' : 'positive'
         var icon = type == 'negative' ? 'error' : 'done';
         var message = response.flash_message
-        dispatch('setFlash',{icon,type,message})
-        return response.data
+        if(message)
+            dispatch('setFlash',{icon,type,message})
+        return response.data 
     },
 
     async setProviderOrders({commit},payload){
@@ -23,7 +25,6 @@ export const actions = {
 
     async setCustomerMenu({commit, dispatch}, payload){
         var response = await API.getMenu(payload)
-        // response = dispatch('filterResponse',response)
         commit(types.SET_CUSTOMER_MENU, response.data)
     },
     
