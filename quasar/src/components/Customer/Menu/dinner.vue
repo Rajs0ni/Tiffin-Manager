@@ -1,5 +1,5 @@
 <template>
-    <q-collapsible icon="brightness_3" label="Dinner" opened>
+    <q-collapsible icon="brightness_3"  label="Dinner" opened>
         <q-card inline class="fit" v-if="data">
           <q-card-main>
             <q-item class="text-weight-light">
@@ -55,7 +55,7 @@ export default {
         return this.$store.state.tiffin.customer.menu
         }
     },
-    beforeMount(){
+    created(){
         this.canOrderOrNot()
     },
     methods:{

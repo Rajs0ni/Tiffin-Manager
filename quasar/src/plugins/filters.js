@@ -21,6 +21,10 @@ export default ({ app, router, Vue }) => {
       var suffix = hour >= 12 ? " PM" : " AM";
       hour = (hour != 12) ? (hour % 12) : hour ;
       return (hour+suffix)
+    }),
+
+    Vue.filter('status',function(value){
+      return value ? 'Delivered' : 'Pending';
     })
   }
   

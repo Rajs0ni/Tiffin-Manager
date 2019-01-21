@@ -3,7 +3,7 @@
         <div class="col-12" v-if="orders">
             <q-list highlight no-border>
                 <div class="col-12"  v-for="order in orders" :key="order.index" >
-                    <q-list-header v-if="order.key ==0" style="color:red">Undelivered</q-list-header>
+                    <q-list-header v-if="order.key == 0" style="color:red">Undelivered</q-list-header>
                     <q-list-header v-else style="color:green">Delivered</q-list-header>
                         <q-item highlight separator class="cursor-pointer" v-for="record in order.value" :key="record.index" @click.native="getOrder(record)">
                             <q-item-side left color="grey-10">
@@ -17,8 +17,9 @@
                                             outline
                                             size="sm"
                                             icon="fas fa-truck"
-                                            :color="[record.status ? 'positive' : 'negative']"
-                                            @click.native.stop="deliverOrder(record.id)"></q-btn>
+                                            :color="record.status ? 'positive' : 'negative'"
+                                            @click.native.stop="deliverOrder(record.id)">
+                                            <q-tooltip>Deliver</q-tooltip></q-btn>
                             </q-item-side>
                         </q-item>
                         <q-card-separator />

@@ -82,7 +82,6 @@ class Order{
             $data = $requestBody->payload['data'];
             $tiffin = Tiffin::findOrFail($data['id']);
             $order = new OrderModel;
-            // $responseBody->setData(date('G',strtotime($tiffin->lunch_end)));
             $order->provider_id = $tiffin->provider_id;
             $order->tiffin_id = $tiffin->id;
             $order->no_of_tiffin = $requestBody->payload['quantity'];
@@ -93,14 +92,6 @@ class Order{
             $order->price = $tiffin->price;
             $order->total_amount = $requestBody->payload['quantity'] * $tiffin->price;
             $customer->orders('customer_id')->save($order);
-            // $customer->orders('customer_id')->save($order);
-            // $order->provider_id = $customer->assoc_provider;
-            // $order->tiffin_id = $customer->tiffin_plan;
-            // $order->no_of_tiffin = $requestBody->payload['quantity'];
-            // $time == 'lunch' ? $order->is_lunch = true : $order->is_dinner = true;
-            // $order->price = $requestBody->payload['price'];
-            // $order->total_amount = $requestBody->payload['quantity'] * $requestBody->payload['price'];
-            // $customer->orders('customer_id')->save($order);
 
             if($order)
             {

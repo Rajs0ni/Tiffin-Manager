@@ -37,7 +37,7 @@
           <q-card-separator />
            <q-item>
             <q-item-main class="on-right">Status</q-item-main>
-            <q-item-side :class="[ order.record.status ? 'text-positive' : 'text-negative' , 'on-left']">
+            <q-item-side :class="[order.record.status ? 'text-positive' : 'text-negative' , 'on-left']">
               {{ order.record.status | status}}
             </q-item-side>
           </q-item>
@@ -45,7 +45,7 @@
       <q-card-separator />
       <q-card-actions>
           <div class="fit text-center">
-             <q-btn outline color="positive" :label="[order.record.status ? 'Undeliver' : 'Deliver']" @click="deliverOrder(order.record.id)"/>
+             <q-btn outline color="positive" :label="order.record.status ? 'Undeliver' : 'Deliver'" @click="deliverOrder(order.record.id)"/>
           </div>
       </q-card-actions>
     </q-card>
@@ -61,18 +61,13 @@ export default {
   mounted(){
      this.getOrder();
   },
-  filters:{
-      status(value){
-          return value?'Delivered':'Pending';
-      }
-    },
   methods:{
-    getOrder(){
+  getOrder(){
       if(this.$route.params.id)
       {
-          this.$store.dispatch('tiffin/setProviderOrder',{
+         this.$store.dispatch('tiffin/setProviderOrder',{
             user_id:1,
-		    order_id:this.$route.params.id
+		        order_id:this.$route.params.id
           })  
       }
     },

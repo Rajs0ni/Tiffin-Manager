@@ -1,7 +1,7 @@
 <template>
     <q-card :class="[$q.platform.is.desktop ? 'q-ma-lg' : 'q-mx-sm q-mt-xl']" >
       <q-card-title class="text-orange-10">
-          Order Id : {{ order.record.id }}
+          Order Id : {{ order.record['id'] }}
       </q-card-title>    
       <q-card-separator />   
       <q-card-main>
@@ -17,7 +17,7 @@
            <q-card-separator />
            <q-item>
             <q-item-main class="on-right">Price</q-item-main>
-            <q-item-side class="on-left">Rs. {{ order.record.price }}/-</q-item-side>
+            <q-item-side class="on-left">Rs. {{ order.record.price }}</q-item-side>
           </q-item>
           <q-card-separator />
            <q-item>
@@ -27,7 +27,7 @@
           <q-card-separator />
            <q-item>
             <q-item-main class="on-right">Total Amount</q-item-main>
-            <q-item-side class="on-left">Rs. {{ order.record.total_amount }}/-</q-item-side>
+            <q-item-side class="on-left">Rs. {{ order.record.total_amount }}</q-item-side>
           </q-item>
           <q-card-separator />
            <q-item>
@@ -50,15 +50,11 @@ export default {
   mounted(){
      this.getOrder();
   },
-  filters:{
-      status(value){
-          return value?'Delivered':'Pending';
-      }
-    },
   methods:{
     getOrder(){
       if(this.$route.params.id)
       {
+         alert(this.$route.path)
           this.$store.dispatch('tiffin/setCustomerOrder',{
             user_id:2,
 		        order_id:this.$route.params.id

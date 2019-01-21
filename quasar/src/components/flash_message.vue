@@ -1,12 +1,11 @@
 <template>
 
-<div class="row justify-center">
-    <div class="text-center absolute flex-center" v-if="flash_message">
+<div class="row flex-center">
+    <div class="text-center absolute-center z-top" v-if="flash_message">
      <q-slide-transition>
        <q-alert
         :color="flash_message.type"
         :icon="flash_message.icon"
-        class="q-mb-sm"
         >
         {{ flash_message.message }}
         </q-alert>
