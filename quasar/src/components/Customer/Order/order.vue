@@ -17,7 +17,7 @@
            <q-card-separator />
            <q-item>
             <q-item-main class="on-right">Price</q-item-main>
-            <q-item-side class="on-left">Rs. {{ order.record.price }}/-</q-item-side>
+            <q-item-side class="on-left">Rs. {{ order.record.price }}</q-item-side>
           </q-item>
           <q-card-separator />
            <q-item>
@@ -27,7 +27,7 @@
           <q-card-separator />
            <q-item>
             <q-item-main class="on-right">Total Amount</q-item-main>
-            <q-item-side class="on-left">Rs. {{ order.record.total_amount }}/-</q-item-side>
+            <q-item-side class="on-left">Rs. {{ order.record.total_amount }}</q-item-side>
           </q-item>
           <q-card-separator />
            <q-item>

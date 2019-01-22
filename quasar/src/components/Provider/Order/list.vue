@@ -17,7 +17,7 @@
                                             outline
                                             size="sm"
                                             icon="fas fa-truck"
-                                            :color="[record.status ? 'positive' : 'negative']"
+                                            :color="record.status ? 'positive' : 'negative'"
                                             @click.native.stop="deliverOrder(record.id)"></q-btn>
                             </q-item-side>
                         </q-item>

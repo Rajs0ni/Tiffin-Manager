@@ -45,7 +45,7 @@
       <q-card-separator />
       <q-card-actions>
           <div class="fit text-center">
-             <q-btn outline color="positive" :label="[order.record.status ? 'Undeliver' : 'Deliver']" @click="deliverOrder(order.record.id)"/>
+             <q-btn outline color="positive" :label="order.record.status ? 'Undeliver' : 'Deliver'" @click="deliverOrder(order.record.id)"/>
           </div>
       </q-card-actions>
     </q-card>
