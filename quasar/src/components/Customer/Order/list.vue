@@ -31,7 +31,7 @@
 export default {
     computed:{
         orders(){
-            return this.$store.state.tiffin.customer.orders
+            return this.$store.state.Tiffin.customer.orders
         }
     },
     methods:{
@@ -40,7 +40,7 @@ export default {
         }
     },
     mounted(){
-        this.$store.dispatch('tiffin/setCustomerOrders',{
+        this.$store.dispatch('Tiffin/setCustomerOrders',{
             user_id:2
         })
     }

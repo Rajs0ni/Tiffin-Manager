@@ -17,15 +17,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-    Route::group(
-        [
-            'prefix' => 'api',
-            'as'     => 'api::'   
-        ],
-        function(){
-            Route::post('/v1/', ['as' => 'v1' , 'uses' => function(Request $request){
-                $api = new \App\api\ApiManager();
-                return $api->handler($request);
-            }]);
-        }
-    );
+Route::group(
+    [
+        'prefix' => 'api',    
+    ],
+    function(){
+        Route::post('/v1/', ['uses' => function(Request $request){
+            $api = new \App\api\ApiManager();
+            return $api->handler($request);
+        }]);
+    }
+);

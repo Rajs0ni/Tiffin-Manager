@@ -2,7 +2,7 @@
   "name": "quasar",
   "version": "0.0.1",
   "description": "A Quasar Framework app",
-  "productName": "Quasar App",
+  "productName": "Tiffin Manager",
   "cordovaId": "org.cordova.quasar.app",
   "author": "rajs0ni <rajsoni168@gmail.com>",
   "private": true,

@@ -32,7 +32,7 @@ export default {
     {
       var today = new Date();
       var day = today.getDay(); 
-      this.$store.dispatch('tiffin/setCustomerMenu', {
+      this.$store.dispatch('Tiffin/setCustomerMenu', {
           menuDay: day
         })
         .then(()=>{
@@ -40,10 +40,10 @@ export default {
         })
     },
     storeTimeLocally(){
-        let lunch_start = this.$store.state.tiffin.customer.menu.lunch_start
-        let lunch_end = this.$store.state.tiffin.customer.menu.lunch_end
-        let dinner_start = this.$store.state.tiffin.customer.menu.dinner_start
-        let dinner_end = this.$store.state.tiffin.customer.menu.dinner_end
+        let lunch_start = this.$store.state.Tiffin.customer.menu.lunch_start
+        let lunch_end = this.$store.state.Tiffin.customer.menu.lunch_end
+        let dinner_start = this.$store.state.Tiffin.customer.menu.dinner_start
+        let dinner_end = this.$store.state.Tiffin.customer.menu.dinner_end
         if(lunch_start && lunch_end && dinner_start && dinner_end)
         {
           this.$q.localStorage.set(time.LUNCH_START, lunch_start)

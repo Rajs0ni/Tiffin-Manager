@@ -2,9 +2,7 @@
 <template>
   <q-page>
     <flash></flash>
-    <keep-alive>
-        <router-view /> 
-    </keep-alive>
+    <router-view /> 
   </q-page>
 </template>
 

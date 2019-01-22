@@ -33,7 +33,7 @@
 export default {
   computed:{
     data:function(){
-      return this.$store.state.tiffin.provider.menu
+      return this.$store.state.Tiffin.provider.menu
     }
   },
   mounted(){
@@ -50,7 +50,7 @@ export default {
     getTodayMenu(){
       var today = new Date();
       var day = today.getDay(); 
-      this.$store.dispatch('tiffin/setProviderMenu', {
+      this.$store.dispatch('Tiffin/setProviderMenu', {
           menuDay: day
         })
     }

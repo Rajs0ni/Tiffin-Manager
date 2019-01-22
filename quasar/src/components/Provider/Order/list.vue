@@ -2,8 +2,8 @@
     <div class="row" >
         <div class="col-12" v-if="orders">
             <q-list highlight no-border>
-                <div class="col-12"  v-for="order in orders" :key="order.index" >
-                    <q-list-header v-if="order.key ==0" style="color:red">Undelivered</q-list-header>
+                <div class="col-12" v-for="order in orders" :key="order.index" >
+                    <q-list-header v-if="order.key == 0" style="color:red">Undelivered</q-list-header>
                     <q-list-header v-else style="color:green">Delivered</q-list-header>
                         <q-item highlight separator class="cursor-pointer" v-for="record in order.value" :key="record.index" @click.native="getOrder(record)">
                             <q-item-side left color="grey-10">
@@ -11,14 +11,15 @@
                                 <q-item-tile label>Quantity&nbsp;:&nbsp;<span >{{ record.no_of_tiffin }}</span></q-item-tile>
                             </q-item-side>
                             <q-item-main class="text-center" >
-                                <span style="color:grey">{{ record.created_at | parseDate}}</span>
+                                <span style="color:grey">{{ record.created_at | parseDate }}</span>
                             </q-item-main>
                             <q-item-side right><q-btn
-                                            outline
-                                            size="sm"
-                                            icon="fas fa-truck"
-                                            :color="record.status ? 'positive' : 'negative'"
-                                            @click.native.stop="deliverOrder(record.id)"></q-btn>
+                                    outline
+                                    size="sm"
+                                    icon="fas fa-truck"
+                                    :color="record.status ? 'positive' : 'negative'"
+                                    @click.native.stop="deliverOrder(record.id)">
+                                    <q-tooltip :offset=[8,4]>Deliver</q-tooltip></q-btn>
                             </q-item-side>
                         </q-item>
                         <q-card-separator />
@@ -36,7 +37,7 @@
 export default {
     computed:{
         orders(){
-            return this.$store.state.tiffin.provider.orders
+            return this.$store.state.Tiffin.provider.orders
         },
     },
     mounted(){
@@ -44,7 +45,7 @@ export default {
     },
     methods:{
         getOrders(){
-            this.$store.dispatch('tiffin/setProviderOrders',{
+            this.$store.dispatch('Tiffin/setProviderOrders',{
             user_id:1
             })
         },
@@ -53,7 +54,7 @@ export default {
         },
         deliverOrder(id)
         {
-            this.$store.dispatch('tiffin/processOrder',{
+            this.$store.dispatch('Tiffin/processOrder',{
             order_id:id
             }).then(()=>{
                 this.getOrders()

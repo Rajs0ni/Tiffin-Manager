@@ -1,5 +1,5 @@
 <template>
-    <q-collapsible icon="brightness_3" label="Dinner" opened>
+    <q-collapsible icon="brightness_3"  label="Dinner" opened>
         <q-card inline class="fit" v-if="data">
           <q-card-main>
             <q-item class="text-weight-light">
@@ -29,7 +29,9 @@
           <q-card-separator />
           <div class="text-center">
               <div class="q-mt-sm q-mb-sm"> 
-                  <q-btn outline color="positive" :disabled="active" label="Order" @click="order(data)"/>
+                  <q-btn outline color="positive" :loading="loading" :disabled="active"  @click="order(data)">
+                       Order<span slot="loading"><q-spinner-hourglass class="text-center" />Loading...</span>
+                  </q-btn>
               </div> 
           </div>
         </q-card>
@@ -47,15 +49,16 @@ export default {
     data(){
         return{
             Quantity:1,
-            active:false
+            active:false,
+            loading:false
         }
     },
     computed:{ 
         data:function(){
-        return this.$store.state.tiffin.customer.menu
+        return this.$store.state.Tiffin.customer.menu
         }
     },
-    beforeMount(){
+    created(){
         this.canOrderOrNot()
     },
     methods:{
@@ -77,13 +80,17 @@ export default {
 
         order(data)
         {
-            var date = new Date();
-            var current_time = date.getHours();
-            this.$store.dispatch('tiffin/saveOrder', {
-            quantity:this.Quantity,
-            data:data,
-            time:current_time
-            })
+            this.loading = true
+            setTimeout(() => {
+                var date = new Date();
+                var current_time = date.getHours();
+                this.$store.dispatch('Tiffin/saveOrder', {
+                quantity:this.Quantity,
+                data:data,
+                time:current_time })
+                this.loading = false
+            }, 1500)
+            
         }
     }
     

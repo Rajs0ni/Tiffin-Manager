@@ -30,7 +30,7 @@ class ApiManager{
         catch (\Exception $e)
         {
             $responseBody->setError($e->getMessage());
-            $responseBody->setStatus('500');
+            $responseBody->setStatus(500);
         }
         return response()->json($responseBody);
     }

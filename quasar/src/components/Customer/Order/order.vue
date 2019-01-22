@@ -44,25 +44,21 @@
 export default {
   computed:{
     order(){
-        return this.$store.state.tiffin.customer.order
+        return this.$store.state.Tiffin.customer.order
     }
   },
   mounted(){
      this.getOrder();
   },
-  filters:{
-      status(value){
-          return value?'Delivered':'Pending';
-      }
-    },
   methods:{
     getOrder(){
+      this.$store.state.Tiffin.customer.order = {}
       if(this.$route.params.id)
       {
-          this.$store.dispatch('tiffin/setCustomerOrder',{
-            user_id:2,
-		        order_id:this.$route.params.id
-          })  
+        this.$store.dispatch('Tiffin/setCustomerOrder',{
+          user_id:2,
+          order_id:this.$route.params.id
+        })  
       }
     }
   }

@@ -61,7 +61,6 @@ export const API = {
         payload:{
             customer_id:2,
             quantity:payload.quantity,
-            // tiffin_id:payload.tiffin_id,
             data:payload.data,
             time:payload.time
         }

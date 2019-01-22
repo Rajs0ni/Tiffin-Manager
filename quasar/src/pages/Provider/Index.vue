@@ -1,10 +1,8 @@
 
 <template>
-  <q-page clas="fit">
+  <q-page>
     <flash></flash>
-    <keep-alive>
-        <router-view /> 
-    </keep-alive>
+    <router-view /> 
 </q-page>
 
 </template>
