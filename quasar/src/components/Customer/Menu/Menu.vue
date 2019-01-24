@@ -10,9 +10,9 @@
 </template>
 
 <script>
-import lunch from 'components/Customer/Menu/lunch.vue'
-import dinner from 'components/Customer/Menu/dinner.vue'
-import * as time from 'src/store/Tiffin/time.js'
+import lunch from 'components/Customer/Menu/Lunch.vue'
+import dinner from 'components/Customer/Menu/Dinner.vue'
+import * as time from 'src/store/time.js'
 
 export default {
   components:{

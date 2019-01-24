@@ -29,8 +29,8 @@ class ApiManager{
         }
         catch (\Exception $e)
         {
-            $responseBody->setError($e->getMessage());
-            $responseBody->setStatus(500);
+            $responseBody->setError($e->getMessage())
+                         ->setStatus(500);
         }
         return response()->json($responseBody);
     }

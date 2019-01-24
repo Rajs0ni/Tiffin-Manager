@@ -1,9 +1,9 @@
 <template>
-    <q-collapsible icon="brightness_3"  label="Dinner" opened>
+    <q-collapsible icon="wb_sunny" label="Lunch" opened>
         <q-card inline class="fit" v-if="data">
           <q-card-main>
             <q-item class="text-weight-light">
-                  {{ data.menus[0].dinner_desc}}
+                  {{ data.menus[0].lunch_desc}}
             </q-item>     
           </q-card-main>
           <q-card-separator />
@@ -11,7 +11,7 @@
            <div class="row fit">
               <q-item class="q-ml-sm">
                   <q-item-main class="q-body-2 ">Time to Order :</q-item-main>
-                  <q-item-side class="q-body-1">{{ data.dinner_start | parseTime}} - {{ data.dinner_end | parseTime}}</q-item-side>
+                  <q-item-side class="q-body-1">{{ data.lunch_start | parseTime}} - {{ data.lunch_end | parseTime}}</q-item-side>
               </q-item>
            </div>
             <div class="row fit">
@@ -20,8 +20,8 @@
                 </div>
                 <div class="col-6 text-right">
                     <q-btn-group outline class="q-pt-sm on-left">
-                        <q-btn outline  size="sm"  @click="changeQuantity('incr',Quantity)" color="positive" icon="add" style="margin-right:-1px" />
-                        <q-btn outline  size="sm"  @click="changeQuantity('decr',Quantity)" color="positive" icon="remove" />
+                    <q-btn outline  size="sm"  @click="changeQuantity('incr',Quantity)" color="positive" icon="add" style="margin-right:-1px" />
+                    <q-btn outline  size="sm"  @click="changeQuantity('decr',Quantity)" color="positive" icon="remove" />
                     </q-btn-group>
                 </div>
             </div>
@@ -29,8 +29,8 @@
           <q-card-separator />
           <div class="text-center">
               <div class="q-mt-sm q-mb-sm"> 
-                  <q-btn outline color="positive" :loading="loading" :disabled="active"  @click="order(data)">
-                       Order<span slot="loading"><q-spinner-hourglass class="text-center" />Loading...</span>
+                 <q-btn outline color="positive" :loading="loading" :disabled="active"  @click="order(data)">
+                       Order<span slot="loading"><q-spinner-hourglass class="on-left" />Loading...</span>
                   </q-btn>
               </div> 
           </div>
@@ -42,10 +42,10 @@
 </template>
 
 <script>
-import * as time from 'src/store/Tiffin/time.js'
+import * as time from 'src/store/time.js'
 
 export default {
-    name:'Dinner',
+    name:'Lunch',
     data(){
         return{
             Quantity:1,
@@ -53,7 +53,7 @@ export default {
             loading:false
         }
     },
-    computed:{ 
+    computed:{
         data:function(){
         return this.$store.state.Tiffin.customer.menu
         }
@@ -66,8 +66,8 @@ export default {
         {
             var date = new Date();
             var current_time = date.getHours();
-            var dinner_end = parseInt(this.$q.localStorage.get.item(time.DINNER_END))
-            if(dinner_end && (current_time > (dinner_end-1)))
+            var lunch_end = parseInt(this.$q.localStorage.get.item(time.LUNCH_END));
+            if(lunch_end && (current_time > (lunch_end-1)))
               this.active = !this.active
         },
 
@@ -89,11 +89,9 @@ export default {
                 data:data,
                 time:current_time })
                 this.loading = false
-            }, 1500)
-            
+            }, 1000)
         }
     }
-    
 }
 </script>
 

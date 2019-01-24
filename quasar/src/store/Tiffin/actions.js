@@ -1,4 +1,4 @@
-import {API} from './api.js';
+import {API} from '../api.js';
 import * as types from './types.js';
 
 export const actions = {

@@ -29,8 +29,8 @@ export const API = {
 
  getMenu(payload){
     return Axios.post('',{
-        namespace:"Tiffin",
-        action:"getMenu",
+        namespace:"TiffinMenu",
+        action:"get",
         payload:{
             provider_id:1,
             tiffin_id:1,

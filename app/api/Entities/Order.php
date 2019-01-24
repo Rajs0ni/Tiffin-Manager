@@ -9,14 +9,14 @@ use App\User;
 use Validator;
 use App\Tiffin;
 
-class Order{
+class Order {
 
     public function list(RequestBody $requestBody, ResponseBody $responseBody)
     {
         try
         {
-            $user_id  = $requestBody->payload['user_id'];
-            $user = User::findOrFail($user_id);
+            $userId  = $requestBody->payload['user_id'];
+            $user = User::findOrFail($userId);
             $column = $user->is_provider == 1 ? 'provider_id' : 'customer_id';
             $orders = $user->orders($column)->get();
             $orders = $orders->groupBy('status');
@@ -24,19 +24,22 @@ class Order{
             {
                 $data[] = ['key' => $key,'value' => $value];
             }
-            !$orders->isEmpty() ?
-            $responseBody->setData($data)->setStatus(200) :
-            $responseBody->setError('Orders Not Found')->setStatus(500);
-        }
+            !$orders->isEmpty() ? $responseBody->setData($data)
+                                               ->setStatus(200)
+                                : $responseBody->setError('Orders Not Found')
+                                               ->setStatus(500);
+        }                   
         catch(ModelNotFoundException $e)
         {
-            $responseBody->setError("Model Not Found")->setStatus(500)
-                         ->setFlash("No Orders Found Yet");
+            $responseBody->setError($e->getMessage())
+                         ->setFlash("No Orders Found Yet")
+                         ->setStatus(500);
         }
         catch(\Exception $e)
         {
-            $responseBody->setError("Orders Not Found")->setStatus(500)
-                         ->setFlash("No Orders Found Yet");
+            $responseBody->setError($e->getMessage())
+                         ->setFlash("No Orders Found Yet")
+                         ->setStatus(500);
         }
     }
 
@@ -44,30 +47,34 @@ class Order{
     {
         try
         {
-            $user_id  = $requestBody->payload['user_id'];
-            $user = User::findOrFail($user_id);
-            $order_id = $requestBody->payload['order_id'];
+            $userId  = $requestBody->payload['user_id'];
+            $user = User::findOrFail($userId);
+            $orderId = $requestBody->payload['order_id'];
             $column = $user->is_provider == 1 ? 'provider_id' : 'customer_id';
-            $order = $user->orders($column)->findOrFail($order_id);
-            $customer_name = User::findOrFail($order->customer_id)->name;
-            $tiffin_name = Tiffin::findOrFail($order->tiffin_id)->name;
+            $order = $user->orders($column)->findOrFail($orderId);
+            $customerName = User::findOrFail($order->customer_id)->name;
+            $tiffinName = Tiffin::findOrFail($order->tiffin_id)->name;
 
             $data = [
-                'customer_name' => $customer_name,
-                'tiffin_plan' => $tiffin_name,
+                'customer_name' => $customerName,
+                'tiffin_plan' => $tiffinName,
                 'record' => $order
             ];
 
-            $responseBody->setData($data)->setStatus(200);
+            $responseBody->setData($data)
+                         ->setStatus(200);
         }
         catch(ModelNotFoundException $e)
         {
-            $responseBody->setError("Model Not Found")->setStatus(500)
-                         ->setFlash("No Such Order Found !!");
+            $responseBody->setError($e->getMessage())
+                         ->setFlash("No Such Order Found !!")
+                         ->setStatus(500);
         }
         catch(\Exception $e)
         {
-            $responseBody->setError("No Such Order Found !!")->setStatus(500);
+            $responseBody->setError($e->getMessage())
+                         ->setFlash("No Such Order Found !!")
+                         ->setStatus(500);
         }
     }
 
@@ -75,8 +82,8 @@ class Order{
     {
         try
         {
-            $customer_id = $requestBody->payload['customer_id'];
-            $customer = User::findOrFail($customer_id);
+            $customerId = $requestBody->payload['customer_id'];
+            $customer = User::findOrFail($customerId);
             $this->validate($requestBody);
             $time = $requestBody->payload['time'];
             $data = $requestBody->payload['data'];
@@ -93,20 +100,22 @@ class Order{
             $order->total_amount = $requestBody->payload['quantity'] * $tiffin->price;
             $customer->orders('customer_id')->save($order);
 
-            if($order)
-            {
-                $responseBody->setFlash("Order has been placed successfully !!")->setStatus(200);                
-            }
+            $order ? $responseBody->setFlash("Order has been placed successfully !!") 
+                                   ->setStatus(200)
+                   : $responseBody->setFlash("Order can not be placed !!")
+                                   ->setStatus(500);
         }
         catch(ModelNotFoundException $e)
         {
-            $responseBody->setError("Model Not Found")->setStatus(500)
-                         ->setFlash("Order can not be placed !!");
+            $responseBody->setError($e->getMessage())
+                         ->setFlash("Order can not be placed !!")
+                         ->setStatus(500);
         }
         catch(\Exception $e)
         {
-            $responseBody->setError($e->getMessage())->setStatus(500)
-                         ->setFlash("Order can not be placed !!");
+            $responseBody->setError($e->getMessage())
+                         ->setFlash("Order can not be placed !!")
+                         ->setStatus(500);
         }
     }
 
@@ -114,26 +123,29 @@ class Order{
     {
         try
         {
-            $user_id  = $requestBody->payload['user_id'];
-            $user = User::findOrFail($user_id);
+            $userId  = $requestBody->payload['user_id'];
+            $user = User::findOrFail($userId);
             if($user->is_provider)
             {
-                $order_id = $requestBody->payload['order_id'];
-                $order = $user->orders('provider_id')->findOrFail($order_id);
+                $orderId = $requestBody->payload['order_id'];
+                $order = $user->orders('provider_id')->findOrFail($orderId);
                 $order->status = !$order->status;
                 $order->save();
-                $responseBody->setFlash("Order has been processed !!")->setStatus(200);    
+                $responseBody->setFlash("Order has been processed !!")
+                             ->setStatus(200);    
             }
         }
         catch(ModelNotFoundException $e)
         {
-            $responseBody->setError("Model Not Found")->setStatus(500)
-                         ->setFlash("Order can't be processed !!");
+            $responseBody->setError($e->getMessage())
+                         ->setFlash("Order can't be processed !!")
+                         ->setStatus(500);
         }
         catch(\Exception $e)
         {
-            $responseBody->setError("Order Not Found")->setStatus(500)
-                         ->setFlash("Order can't be processed !!");
+            $responseBody->setError($e->getMessage())
+                         ->setFlash("Order can't be processed !!")
+                         ->setStatus(500);
         }
     }
 

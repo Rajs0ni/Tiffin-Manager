@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import flash from 'components/flash_message.vue'
+import flash from 'components/Flash_message.vue'
 export default {
     name: 'CustomerPageIndex',
     components:{
