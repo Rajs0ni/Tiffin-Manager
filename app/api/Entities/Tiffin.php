@@ -42,7 +42,7 @@ class Tiffin {
             $provider = $this->validateProvider($requestBody);
             $tiffinId = $requestBody->payload['tiffin_id'];
             $tiffin = $provider->tiffins()->findOrFail($tiffinId);
-            $responseBody->setData($tiffin)
+            $responseBody->setData(gettype($tiffin))
                          ->setStatus(200);              
         }
         catch (ModelNotFoundException $e)

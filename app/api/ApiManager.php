@@ -16,7 +16,7 @@ class ApiManager{
             $action = $request->action;
     
             if(!class_exists($namespace, true))
-                throw new \Exception("No Namespace $namespace Found");
+                throw new \Exception("$namespace Namespace Not Found");
             
             $instance = new $namespace;
             $requestBody = new \App\api\RequestBody($request);
@@ -24,7 +24,7 @@ class ApiManager{
             if(method_exists($instance, $action))
                 $instance->$action($requestBody, $responseBody);
             else
-                throw new \Exception("No Action $action Found");
+                throw new \Exception("$action Action Not Found");
 
         }
         catch (\Exception $e)
