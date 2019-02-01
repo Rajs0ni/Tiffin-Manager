@@ -25,5 +25,8 @@ export default {
 </script>
 
 <style>
-
+.absolute-center{
+    width:400px; 
+    max-width: 90vw;
+}
 </style>

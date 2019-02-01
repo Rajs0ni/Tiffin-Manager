@@ -43,6 +43,7 @@
 
 <script>
 import * as time from 'src/store/time.js'
+import {mapState} from 'vuex'
 
 export default {
     name:'Dinner',
@@ -54,9 +55,9 @@ export default {
         }
     },
     computed:{ 
-        data:function(){
-        return this.$store.state.Tiffin.customer.menu
-        }
+         ...mapState({
+         data: state => state.Tiffin.customer.menu
+        }),
     },
     created(){
         this.canOrderOrNot()

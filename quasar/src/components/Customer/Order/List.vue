@@ -28,11 +28,12 @@
 
 
 <script>
+import {mapState} from 'vuex'
 export default {
     computed:{
-        orders(){
-            return this.$store.state.Tiffin.customer.orders
-        }
+        ...mapState({
+            orders:state => state.Tiffin.customer.orders
+        })
     },
     methods:{
         getOrder(order){

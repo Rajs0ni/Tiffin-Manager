@@ -2,7 +2,13 @@ export default () => ({
   customer:{
     menu:{},
     orders:[],
-    order:{}
+    order:{},
+    detail:{
+      name:'',
+      mobile:'',
+      address:'',
+      otp:''
+    }
   },
 
   provider:{

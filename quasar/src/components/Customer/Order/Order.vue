@@ -41,11 +41,12 @@
  </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
   computed:{
-    order(){
-        return this.$store.state.Tiffin.customer.order
-    }
+     ...mapState({
+            order:state => state.Tiffin.customer.order
+        })
   },
   mounted(){
      this.getOrder();

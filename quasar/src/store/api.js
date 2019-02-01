@@ -67,6 +67,30 @@ export const API = {
     })
     .then((response) => (response.data))
     .catch((error) => (error))
-}
+},
 
+ getOTP(payload){
+    alert(payload.customer)
+    return Axios.post('',{
+        namespace:"Authenticate",
+        action:"getOTP",
+        payload:{
+            customer:payload.customer
+        }
+    })
+    .then((response) => (response.data))
+    .catch((error) => (error))
+ },
+
+ verifyOTP(payload){
+    return Axios.post('',{
+        namespace:"Authenticate",
+        action:"verifyOTP",
+        payload:{
+            customer:payload.customer
+        }
+    })
+    .then((response) => (response.data))
+    .catch((error) => (error))
+}
 }

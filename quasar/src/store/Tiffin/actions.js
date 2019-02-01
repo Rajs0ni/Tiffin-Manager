@@ -55,6 +55,17 @@ export const actions = {
         dispatch('filterResponse',response)
     },
 
+    async getOTP(payload)
+    {
+        var response = await API.getOTP(payload)
+        return response;
+    },
+
+    async verifyOTP({commit, dispatch},payload){
+        var response = await API.verifyOTP(payload)
+        dispatch('filterResponse',response)
+    },
+
     async setFlash({commit}, payload)
     {
         commit(types.SET_FLASH, payload)

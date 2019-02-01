@@ -27,6 +27,10 @@ const routes = [
   {
     path:'/login',
     component: () => import('components/Login.vue')
+  },
+  {
+    path:'/verify',
+    component: () => import('components/VerifyMobile.vue')
   }
 ]
 
