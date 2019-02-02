@@ -27,4 +27,18 @@ class Customer {
         }
     }
 
+    public function save(RequestBody $requestBody, ResponseBody $responseBody)
+    {
+        try
+        {
+           
+        }
+        catch(\Exception $e)
+        {
+            $responseBody->setError($e->getMessage())
+                         ->setFlash($e->getMessage())                
+                         ->setStatus(500);
+        }
+    }
+
 }

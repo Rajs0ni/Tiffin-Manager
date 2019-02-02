@@ -6,8 +6,9 @@ export default () => ({
     detail:{
       name:'',
       mobile:'',
-      address:'',
-      otp:''
+      location:'',
+      otp:'',
+      access_token:''
     }
   },
 

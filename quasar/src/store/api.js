@@ -12,7 +12,7 @@ export const API = {
     })
     .then((response) => (response.data))
     .catch((error) => (error))
-},
+ },
 
  getOrder(payload){
     return Axios.post('',{
@@ -25,7 +25,7 @@ export const API = {
     })
     .then((response) => (response.data))
     .catch((error) => (error))
-},
+ },
 
  getMenu(payload){
     return Axios.post('',{
@@ -39,7 +39,7 @@ export const API = {
     })
     .then((response) => (response.data))
     .catch((error) => (error))
-},
+ },
 
  processOrder(payload){
     return Axios.post('',{
@@ -52,7 +52,7 @@ export const API = {
     })
     .then((response) => (response.data))
     .catch((error) => (error))
-},
+ },
 
  saveOrder(payload){
     return Axios.post('',{
@@ -67,10 +67,9 @@ export const API = {
     })
     .then((response) => (response.data))
     .catch((error) => (error))
-},
+ },
 
  getOTP(payload){
-    alert(payload.customer)
     return Axios.post('',{
         namespace:"Authenticate",
         action:"getOTP",
@@ -92,5 +91,17 @@ export const API = {
     })
     .then((response) => (response.data))
     .catch((error) => (error))
-}
+ },
+
+ register(payload){
+    return Axios.post('',{
+        namespace:"Customer",
+        action:"save",
+        payload:{
+            customer:payload.customer
+        }
+    })
+    .then((response) => (response.data))
+    .catch((error) => (error))
+ }
 }

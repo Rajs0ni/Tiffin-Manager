@@ -3,6 +3,7 @@
 namespace App\Api\Entities;
 use App\api\RequestBody;
 use App\api\ResponseBody;
+use Illuminate\Support\Facades\Hash;
 use Validator;
 
 class Authenticate {
@@ -30,13 +31,18 @@ class Authenticate {
         try
         {
             $otp = 1234;
-            $this->validateMobile($requestBody);
+         
             //todo :: find user by received mobile number
-            $mobileNumber = $requestBody->payload['customer']['mobile'];
+            $customer = $requestBody->payload['customer'];
+            $mobileNumber = $customer['mobile'];
             $receivedOTP = $requestBody->payload['customer']['otp'];
             if($otp == $receivedOTP)
             {
+                $token = Hash::make(str_random(8));
+                $customer['access_token'] = $token;
+                $customer['otp'] = null;
                 $responseBody->setFlash("Your account has been verified successfully !!")
+                             ->setData($token)
                              ->setStatus(200);
             }
             else
@@ -53,9 +59,10 @@ class Authenticate {
         }
     }
 
-    public function validateMobile(RequestBody $requestBody){
+    public function validateMobile(RequestBody $requestBody)
+    {
         $validator = Validator::make($requestBody->payload['customer'],[
-            'mobile' => 'required | numeric | digits:10'
+            'mobile' => 'required | numeric | digits:10 |regex:/^[6-9][0-9]{1,10}[0-9]+/'     
         ]);
 
         if ($validator->fails()) {
