@@ -67,7 +67,7 @@
                 </div>
                 <div class="row">
                     <div class="col-12"><br><br>
-                        <a href="" class="q-body-2">Resend OTP</a><br> <br>
+                        <a href="" @click.prevent="getOTP()" class="q-body-2">Resend OTP</a><br> <br>
                         <a href="" @click.prevent="otpGot=false" class="text-negative q-body-2">Wrong Mobile Number ?</a>
                     </div>
                 </div>
