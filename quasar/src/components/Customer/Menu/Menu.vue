@@ -21,6 +21,9 @@ export default {
   created(){
     this.getTodayMenu()
   },
+  mounted(){
+    
+  },
   methods:{
     refresher (done) {
       setTimeout(() => {
@@ -31,7 +34,7 @@ export default {
     getTodayMenu()
     {
       var today = new Date();
-      var day = today.getDay(); 
+      var day = today.getDay();  
       this.$store.dispatch('Tiffin/setCustomerMenu', {
           menuDay: day
         })

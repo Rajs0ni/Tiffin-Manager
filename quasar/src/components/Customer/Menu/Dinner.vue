@@ -44,7 +44,6 @@
 <script>
 import * as time from 'src/store/time.js'
 import {mapState} from 'vuex'
-
 export default {
     name:'Dinner',
     data(){

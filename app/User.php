@@ -11,9 +11,13 @@ class User extends Authenticatable
     use Notifiable;
     // protected $primaryKey = 'mobile';
     protected $hidden = [
-         'remember_token',
+        //  'remember_token',
+        'is_provider'
     ];
 
+    protected $fillable = [
+        'mobile', 'name','location'
+    ];
 
     public function tiffins()
     {

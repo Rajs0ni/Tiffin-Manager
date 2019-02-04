@@ -5,6 +5,7 @@ use App\api\RequestBody;
 use App\api\ResponseBody;
 use Illuminate\Support\Facades\Hash;
 use Validator;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\User;
 
 class Authenticate {
@@ -14,11 +15,18 @@ class Authenticate {
         try
         {
             $this->validateMobile($requestBody);
-            $customer = $requestBody->payload['customer'];
-            $mobileNumber = $customer['mobile'];
-            //todo :: save and find mobile number
-            //todo :: save OTP for received mobile num in DB 
+            $otp =1234;
+            $mobileNumber = $requestBody->payload['customer']['mobile'];
+            $customer = User::firstOrNew(array('mobile' => $mobileNumber));
+            $customer->otp = $otp;
+            $customer->save();                                                
             $responseBody->setStatus(200);
+        }
+        catch(ModelNotFoundException $e)
+        {
+            $responseBody->setError($e->getMessage())
+                         ->setFlash($e->getMessage())
+                         ->setStatus(500);
         }
         catch(\Exception $e)
         {
@@ -32,20 +40,19 @@ class Authenticate {
     {
         try
         {
-            $otp = 1234;
-         
-            //todo :: find user by received mobile number
-            $customer = $requestBody->payload['customer'];
-            $mobileNumber = $customer['mobile'];
-            $customer = User::findOrFail($mobileNumber);
+            $otp = 1234;      
+            $this->validateMobile($requestBody);   
+            $mobileNumber = $requestBody->payload['customer']['mobile'];
+            $customer = User::where('mobile', $mobileNumber)->first();
             $receivedOTP = $requestBody->payload['customer']['otp'];
-            if($otp == $receivedOTP)
+            if($customer->otp == $receivedOTP)
             {
-                $token = Hash::make(str_random(8));
-                $customer['access_token'] = $token;
-                $customer['otp'] = null;
+                $token = bcrypt(str_random(100));
+                $customer->remember_token = $token;
+                $customer->otp = null;
+                $customer->save();
                 $responseBody->setFlash("Your account has been verified successfully !!")
-                             ->setData($token)
+                             ->setData($customer)
                              ->setStatus(200);
             }
             else

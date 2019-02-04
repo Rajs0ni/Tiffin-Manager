@@ -110,10 +110,18 @@ export default {
                 this.$store.dispatch('Tiffin/verifyOTP',{
                 customer:this.customer,
             })
-             .then((response) =>{
+            .then((response) =>{
                 this.$store.dispatch('Tiffin/filterResponse',response)
                 if(response.status == 200)
-                   this.$router.push('/register');
+                {
+                    this.$q.localStorage.set('access_token', response.data.remember_token)
+                    this.$q.localStorage.set('customer', response.data)
+                    this.$q.cookies.set('access_token', response.data.remember_token, {
+                            expire: 10,
+                            path:'/'
+                    })
+                    this.$router.push('/register');
+                }
             }) 
         }
     }
