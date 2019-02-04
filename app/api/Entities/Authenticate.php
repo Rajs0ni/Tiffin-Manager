@@ -5,6 +5,7 @@ use App\api\RequestBody;
 use App\api\ResponseBody;
 use Illuminate\Support\Facades\Hash;
 use Validator;
+use App\User;
 
 class Authenticate {
 
@@ -13,7 +14,8 @@ class Authenticate {
         try
         {
             $this->validateMobile($requestBody);
-            $mobileNumber = $requestBody->payload['customer']['mobile'];
+            $customer = $requestBody->payload['customer'];
+            $mobileNumber = $customer['mobile'];
             //todo :: save and find mobile number
             //todo :: save OTP for received mobile num in DB 
             $responseBody->setStatus(200);
@@ -35,6 +37,7 @@ class Authenticate {
             //todo :: find user by received mobile number
             $customer = $requestBody->payload['customer'];
             $mobileNumber = $customer['mobile'];
+            $customer = User::findOrFail($mobileNumber);
             $receivedOTP = $requestBody->payload['customer']['otp'];
             if($otp == $receivedOTP)
             {

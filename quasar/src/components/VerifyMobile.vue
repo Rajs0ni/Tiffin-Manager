@@ -108,8 +108,13 @@ export default {
         },
         verifyOTP(){
                 this.$store.dispatch('Tiffin/verifyOTP',{
-                customer:this.customer
+                customer:this.customer,
             })
+             .then((response) =>{
+                this.$store.dispatch('Tiffin/filterResponse',response)
+                if(response.status == 200)
+                   this.$router.push('/register');
+            }) 
         }
     }
 }

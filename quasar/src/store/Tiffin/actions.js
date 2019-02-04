@@ -63,7 +63,7 @@ export const actions = {
 
     async verifyOTP({commit, dispatch},payload){
         var response = await API.verifyOTP(payload)
-        dispatch('filterResponse',response)
+        return response;
     },
 
     async register({commit, dispatch},payload){
