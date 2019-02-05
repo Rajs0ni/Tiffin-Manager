@@ -1,6 +1,5 @@
 import {API} from '../api.js';
 import * as types from './types.js';
-
 export const actions = {
 
     async filterResponse({commit, dispatch},response){
@@ -58,17 +57,35 @@ export const actions = {
     async getOTP({commit, dispatch},payload)
     {
         var response = await API.getOTP(payload)
-        return response;
+        dispatch('filterResponse',response)
+        if(response.status==200)
+            payload.callback();
     },
 
     async verifyOTP({commit, dispatch},payload){
         var response = await API.verifyOTP(payload)
-        return response;
+        dispatch('filterResponse',response)
+        .then((response)=>{
+            commit(types.SET_CUSTOMER, response)
+        })
+        if(response.status==200)
+        payload.callback(response);
     },
 
     async register({commit, dispatch},payload){
         var response = await API.register(payload)
         dispatch('filterResponse',response)
+        .then((response)=>{
+            commit(types.SET_CUSTOMER, response)
+        })
+    },
+
+    async getCustomer({commit, dispatch},payload){
+        var response = await API.getCustomer(payload)
+        dispatch('filterResponse',response)
+        .then((response)=>{
+            commit(types.SET_CUSTOMER, response)
+        })
     },
 
     async setFlash({commit}, payload)

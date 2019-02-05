@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-
+import { LocalStorage } from 'quasar'
 import routes from './routes'
 
 Vue.use(VueRouter)
@@ -21,6 +21,24 @@ export default function (/* { store, ssrContext } */) {
     mode: process.env.VUE_ROUTER_MODE,
     base: process.env.VUE_ROUTER_BASE
   })
-    
+
+  Router.beforeEach((to,from,next)=>{
+    if(to.matched.some(record => record.meta.requiresAuth))
+    {
+
+     var customer = JSON.parse(LocalStorage.has('customer'))
+     if(customer)
+     {
+       if(customer.customer_secret)
+       {
+         next()
+       }
+     }
+     else
+       next('/verify') 
+    }
+    next()
+   }) 
+   
   return Router
 }

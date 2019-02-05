@@ -1,4 +1,6 @@
 import {Axios} from 'plugins/axios.js'
+// import { LocalStorage } from 'quasar'
+// Axios.defaults.headers.common['Authorization'] = LocalStorage.get.item('customer_secret');
 
 export const API = {
     
@@ -97,6 +99,18 @@ export const API = {
     return Axios.post('',{
         namespace:"Customer",
         action:"save",
+        payload:{
+            customer:payload.customer
+        }
+    })
+    .then((response) => (response.data))
+    .catch((error) => (error))
+ },
+
+ getCustomer(payload){
+    return Axios.post('',{
+        namespace:"Customer",
+        action:"get",
         payload:{
             customer:payload.customer
         }

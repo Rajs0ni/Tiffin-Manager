@@ -43,7 +43,7 @@ class Authenticate {
             $otp = 1234;      
             $this->validateMobile($requestBody);   
             $mobileNumber = $requestBody->payload['customer']['mobile'];
-            $customer = User::where('mobile', $mobileNumber)->first();
+            $customer = User::where('mobile', $mobileNumber)->firstOrFail();
             $receivedOTP = $requestBody->payload['customer']['otp'];
             if($customer->otp == $receivedOTP)
             {
@@ -60,6 +60,12 @@ class Authenticate {
                 $responseBody->setFlash("Please enter valid OTP")
                              ->setStatus(500);
             }
+        }
+        catch(ModelNotFoundException $e)
+        {
+            $responseBody->setError($e->getMessage())
+                         ->setFlash($e->getMessage())
+                         ->setStatus(500);
         }
         catch(\Exception $e)
         {

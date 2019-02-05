@@ -6,7 +6,18 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  mounted(){
+
+    var customer = JSON.parse(this.$q.localStorage.get.item('customer'))
+    if(customer){
+      this.$store.dispatch('Tiffin/getCustomer',{
+        customer : customer
+      })
+
+    }
+
+  }
 }
 </script>
 

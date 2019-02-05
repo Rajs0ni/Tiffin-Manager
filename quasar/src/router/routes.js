@@ -11,7 +11,10 @@ const routes = [
             { path: '', component: () => import('components/Customer/Menu/Menu.vue') },
             { path: 'orders', component: () => import('components/Customer/Order/List.vue') },
             { path: 'orders/:id', component: () => import('components/Customer/Order/Order.vue') }
-          ]
+          ],
+          meta: { 
+            requiresAuth: true
+          }
       },
       { 
         path: 'provider', component: () => import('pages/Provider/Index.vue') ,
@@ -30,7 +33,11 @@ const routes = [
   },
   {
     path:'/register',
-    component: () => import('components/Register.vue')
+    component: () => import('components/Register.vue'),
+    meta: { 
+      requiresAuth: true
+    }
+
   }
 ]
 

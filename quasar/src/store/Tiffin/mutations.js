@@ -38,6 +38,19 @@ import * as types from './types.js';
 
     [types.RESET_FLASH](state){
         state.flash_message = null
+    },
+
+    [types.SET_CUSTOMER](state, response)
+    {
+        state.customer.detail.id = response.id 
+        state.customer.detail.name = response.name 
+        state.customer.detail.mobile = response.mobile
+        state.customer.detail.location = response.location
+        state.customer.detail.tiffin_plan = response.tiffin_plan
+        state.customer.detail.assoc_provider = response.assoc_provider
+        state.customer.detail.customer_secret = response.remember_token
+
+        state.customer.isLoggedIn = true;
     }
 }
 

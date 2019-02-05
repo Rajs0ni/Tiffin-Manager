@@ -11,8 +11,9 @@ export default () => ({
       otp:'',
       tiffin_plan:'',
       assoc_provider:'',
-      access_token:''
-    }
+      customer_secret:''
+    },
+    isLoggedIn : false
   },
 
   provider:{

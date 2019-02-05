@@ -96,39 +96,33 @@ export default {
     },
     methods:{
         getOTP(){
+            const self = this
             this.$store.dispatch('Tiffin/getOTP',{
-                customer : this.customer
-            })
-            .then((response) =>{
-                if(response.status != 200)
-                    this.$store.dispatch('Tiffin/filterResponse',response)
-                else
-                    this.otpGot = true;
-            })      
+                customer : this.customer,
+                callback:function(){
+                    self.otpGot = true;
+                }
+            })    
         },
         verifyOTP(){
-                this.$store.dispatch('Tiffin/verifyOTP',{
+            const self = this
+            this.$store.dispatch('Tiffin/verifyOTP',{
                 customer:this.customer,
-            })
-            .then((response) =>{
-                this.$store.dispatch('Tiffin/filterResponse',response)
-                if(response.status == 200)
-                {
-                    this.$q.localStorage.set('access_token', response.data.remember_token)
-                    this.$q.localStorage.set('customer', response.data)
-                    this.$q.cookies.set('access_token', response.data.remember_token, {
-                            expire: 10,
-                            path:'/'
-                    })
-                    this.$router.push('/register');
+                callback:function(response){
+                    self.$q.localStorage.set('customer_secret', response.data.remember_token)
+                    self.$q.localStorage.set('customer', response.data)
+                    if(response.data.name && response.data.location) // to setData in state
+                        self.$router.push({path:'/customer'})
+                    else
+                        self.$router.push({path:'/register'})
                 }
-            }) 
+            })    
         }
     }
 }
 </script>
 
-<style>
+<style scoped>
  p {
     padding: 0 10px;
  }
