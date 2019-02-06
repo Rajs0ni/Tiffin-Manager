@@ -25,19 +25,34 @@ export default function (/* { store, ssrContext } */) {
   Router.beforeEach((to,from,next)=>{
     if(to.matched.some(record => record.meta.requiresAuth))
     {
-
-     var customer = JSON.parse(LocalStorage.has('customer'))
-     if(customer)
-     {
-       if(customer.customer_secret)
-       {
-         next()
-       }
-     }
-     else
-       next('/verify') 
+      if(LocalStorage.has('customer') && LocalStorage.has('customer_secret'))
+      {
+        var customer = LocalStorage.get.item('customer')
+        var customer_secret = LocalStorage.get.item('customer_secret')
+          if(customer && customer_secret)
+          {
+            if(to.fullPath == '/verify')
+               Router.go(-1)
+            next()
+          }
+             
+          else
+            next('/verify') 
+      }
+      else
+          next('/verify')
+    }else if (to.matched.some(record => record.meta.redirectIfLogged)) {
+      if (LocalStorage.has('customer') && LocalStorage.has('customer_secret')) {
+        next({
+          path: '/'
+        })
+      } else {
+        next()
+      }
+    } else {
+      next()
     }
-    next()
+      next()
    }) 
    
   return Router

@@ -55,6 +55,7 @@
                             v-model="customer.otp" 
                             style="width:150px" 
                             maxlength="4"
+                            key="otp"
                             type="text"  />
                         <br>
                         <span>Enter 4-digit number</span><br><br><br>
@@ -110,14 +111,15 @@ export default {
                 customer:this.customer,
                 callback:function(response){
                     self.$q.localStorage.set('customer_secret', response.data.remember_token)
-                    self.$q.localStorage.set('customer', response.data)
+                    self.$q.localStorage.set('customer',response.data)
                     if(response.data.name && response.data.location) // to setData in state
                         self.$router.push({path:'/customer'})
                     else
                         self.$router.push({path:'/register'})
                 }
             })    
-        }
+        },
+        
     }
 }
 </script>

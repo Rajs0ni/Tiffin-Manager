@@ -5,16 +5,18 @@
 </template>
 
 <script>
+import helper from './store/helper'
+import * as types from './store/types.js';
 export default {
   name: 'App',
   mounted(){
-
-    var customer = JSON.parse(this.$q.localStorage.get.item('customer'))
-    if(customer){
-      this.$store.dispatch('Tiffin/getCustomer',{
-        customer : customer
-      })
-
+    // alert(helper.isLoggedIn())
+    if(this.$q.localStorage.has('customer'))
+    {
+       const customer = this.$q.localStorage.get.item('customer')
+       this.$store.dispatch('Tiffin/getCustomer', {
+         customer:customer
+        })
     }
 
   }

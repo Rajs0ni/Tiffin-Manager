@@ -1,4 +1,4 @@
-import * as types from './types.js';
+import * as types from '../types';
 
  export const mutations =  {
 
@@ -48,7 +48,7 @@ import * as types from './types.js';
         state.customer.detail.location = response.location
         state.customer.detail.tiffin_plan = response.tiffin_plan
         state.customer.detail.assoc_provider = response.assoc_provider
-        state.customer.detail.customer_secret = response.remember_token
+        state.customer.detail.remember_token = response.remember_token
 
         state.customer.isLoggedIn = true;
     }

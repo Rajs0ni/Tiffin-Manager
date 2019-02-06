@@ -33,7 +33,7 @@ class Customer {
         try
         {
             $customer = User::findOrFail($requestBody->payload['customer']['id']);
-            $customerSecret = $requestBody->payload['customer']['customer_secret'];
+            $customerSecret = $requestBody->payload['customer']['remember_token'];
             if(strcmp($customer->remember_token,$customerSecret) == 0)
             {
                 $responseBody->setData($customer)
@@ -102,5 +102,5 @@ class Customer {
             throw new \Exception ($validator->errors()->first());
         }
     }
-
+    
 }

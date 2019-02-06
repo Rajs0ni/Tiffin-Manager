@@ -29,7 +29,10 @@ const routes = [
   },
   {
     path:'/verify',
-    component: () => import('components/VerifyMobile.vue')
+    component: () => import('components/VerifyMobile.vue'),
+    meta: { 
+      redirectIfLogged: true
+    }
   },
   {
     path:'/register',

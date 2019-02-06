@@ -61,7 +61,7 @@ export const API = {
         namespace:"Order",
         action:"save",
         payload:{
-            customer_id:2,
+            customer:payload.customer,
             quantity:payload.quantity,
             data:payload.data,
             time:payload.time

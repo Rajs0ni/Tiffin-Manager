@@ -82,39 +82,45 @@ class Order {
     {
         try
         {
-            $customerId = $requestBody->payload['customer_id'];
-            $customer = User::findOrFail($customerId);
             $this->validate($requestBody);
-            $time = $requestBody->payload['time'];
-            $data = $requestBody->payload['data'];
-            $tiffin = Tiffin::findOrFail($data['id']);
-            $order = new OrderModel;
-            $order->provider_id = $tiffin->provider_id;
-            $order->tiffin_id = $tiffin->id;
-            $order->no_of_tiffin = $requestBody->payload['quantity'];
-            if($time<=date('G',strtotime($tiffin->lunch_end)))
-                $order->is_lunch = true;
-            else
-                $order->is_dinner = true;
-            $order->price = $tiffin->price;
-            $order->total_amount = $requestBody->payload['quantity'] * $tiffin->price;
-            $customer->orders('customer_id')->save($order);
+            $customerId = $requestBody->payload['customer']['id'];
+            $customer = User::findOrFail($customerId);
+            $customerSecret = $requestBody->payload['customer']['remember_token'];
+            if(strcmp($customer->remember_token,$customerSecret) == 0)
+            {
+                $time = $requestBody->payload['time'];
+                $data = $requestBody->payload['data'];
+                $tiffin = Tiffin::findOrFail($data['id']);
+                $order = new OrderModel;
+                $order->provider_id = $tiffin->provider_id;
+                $order->tiffin_id = $tiffin->id;
+                $order->no_of_tiffin = $requestBody->payload['quantity'];
+                if($time<=date('G',strtotime($tiffin->lunch_end)))
+                    $order->is_lunch = true;
+                else
+                    $order->is_dinner = true;
+                $order->price = $tiffin->price;
+                $order->total_amount = $requestBody->payload['quantity'] * $tiffin->price;
+                $customer->orders('customer_id')->save($order);
 
-            $order ? $responseBody->setFlash("Order has been placed successfully !!") 
-                                   ->setStatus(200)
-                   : $responseBody->setFlash("Order can not be placed !!")
-                                   ->setStatus(500);
-        }
+                $order ? $responseBody->setFlash("Order has been placed successfully !!") 
+                                      ->setStatus(200)
+                       : $responseBody->setFlash("Order can not be placed !!")
+                                      ->setStatus(500);
+            }
+            else
+                throw new \Exception('Authentication Failed')
+;        }
         catch(ModelNotFoundException $e)
         {
             $responseBody->setError($e->getMessage())
-                         ->setFlash("Order can not be placed !!")
+                         ->setFlash("Order Can not be placed")
                          ->setStatus(500);
         }
         catch(\Exception $e)
         {
             $responseBody->setError($e->getMessage())
-                         ->setFlash("Order can not be placed !!")
+                         ->setFlash($e->getMessage())
                          ->setStatus(500);
         }
     }

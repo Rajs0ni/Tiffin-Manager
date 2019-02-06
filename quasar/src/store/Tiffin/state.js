@@ -1,4 +1,5 @@
-export default () => ({
+
+export const state = {
   customer:{
     menu:{},
     orders:[],
@@ -11,7 +12,7 @@ export default () => ({
       otp:'',
       tiffin_plan:'',
       assoc_provider:'',
-      customer_secret:''
+      remember_token:''
     },
     isLoggedIn : false
   },
@@ -23,5 +24,5 @@ export default () => ({
   },
   
   flash_message:''
-})
+}
 

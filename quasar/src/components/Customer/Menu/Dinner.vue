@@ -55,7 +55,8 @@ export default {
     },
     computed:{ 
          ...mapState({
-         data: state => state.Tiffin.customer.menu
+         data: state => state.Tiffin.customer.menu,
+         customer: state => state.Tiffin.customer.detail 
         }),
     },
     created(){
@@ -85,6 +86,7 @@ export default {
                 var date = new Date();
                 var current_time = date.getHours();
                 this.$store.dispatch('Tiffin/saveOrder', {
+                customer:this.customer,
                 quantity:this.Quantity,
                 data:data,
                 time:current_time })

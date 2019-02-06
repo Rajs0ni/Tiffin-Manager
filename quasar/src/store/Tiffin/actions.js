@@ -1,5 +1,5 @@
 import {API} from '../api.js';
-import * as types from './types.js';
+import * as types from '../types.js';
 export const actions = {
 
     async filterResponse({commit, dispatch},response){
