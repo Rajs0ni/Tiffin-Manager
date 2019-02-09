@@ -62,7 +62,7 @@ class Customer {
         {
             $this->validateCustomer($requestBody);
             $customer = User::findOrFail($requestBody->payload['customer']['id']);
-            $customerSecret = $requestBody->payload['customer']['customer_secret'];
+            $customerSecret = $requestBody->payload['customer']['remember_token'];
             if(strcmp($customer->remember_token,$customerSecret) == 0)
             {
                 $customer->name = $requestBody->payload['customer']['name'];
@@ -75,7 +75,7 @@ class Customer {
                              ->setStatus(200);
             }
             else
-                throw new \Exception('Authentication Failed');
+                throw new \Exception('Your Session has been expired. Retry to log in');
         }
         catch(ModelNotFoundException $e)
         {

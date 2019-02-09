@@ -44,6 +44,7 @@
 <script>
 import * as time from 'src/store/time.js'
 import {mapState} from 'vuex'
+import helper from '../../../store/helper';
 export default {
     name:'Dinner',
     data(){
@@ -81,8 +82,11 @@ export default {
 
         order(data)
         {
+            helper.setCustomerFromStorage()
             this.loading = true
-            setTimeout(() => {
+            if(helper.isLoggedIn())
+            {
+                setTimeout(() => {
                 var date = new Date();
                 var current_time = date.getHours();
                 this.$store.dispatch('Tiffin/saveOrder', {
@@ -91,7 +95,18 @@ export default {
                 data:data,
                 time:current_time })
                 this.loading = false
-            }, 1500)
+               }, 1500)
+            }
+            else
+            {
+                this.loading = false
+                this.$store.dispatch('Tiffin/setFlash',{
+                    icon:"error",
+                    type:"negative",
+                    message:"Your Session has expired. Please log in"
+                })
+            }
+            
             
         }
     }

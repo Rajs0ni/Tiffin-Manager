@@ -13,6 +13,7 @@
 import lunch from 'components/Customer/Menu/Lunch.vue'
 import dinner from 'components/Customer/Menu/Dinner.vue'
 import * as time from 'src/store/time.js'
+import { mapState } from 'vuex';
 
 export default {
   components:{
@@ -21,14 +22,16 @@ export default {
   created(){
     this.getTodayMenu()
   },
-  mounted(){
-    
-  },
+ computed:{
+   ...mapState({
+     customer:state => state.Tiffin.customer.detail
+   })
+ },
   methods:{
     refresher (done) {
       setTimeout(() => {
+        this.getTodayMenu()
         done()
-         this.getTodayMenu()
       }, 1000)
     },
     getTodayMenu()
@@ -36,6 +39,7 @@ export default {
       var today = new Date();
       var day = today.getDay();  
       this.$store.dispatch('Tiffin/setCustomerMenu', {
+          customer:this.customer,
           menuDay: day
         })
         .then(()=>{

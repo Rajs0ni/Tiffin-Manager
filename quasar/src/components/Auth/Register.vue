@@ -61,8 +61,14 @@ export default {
     },
  methods:{
     register(){
+        const self = this
         this.$store.dispatch('Tiffin/register',{
-            customer:this.customer
+            customer:this.customer,
+            callback:function(response){
+                self.$q.localStorage.set('customer_secret', response.data.remember_token)
+                self.$q.localStorage.set('customer',response.data)
+                self.$router.push({path:'/customer'})
+            }
         })
     }
  }

@@ -109,7 +109,7 @@ class Order {
                                       ->setStatus(500);
             }
             else
-                throw new \Exception('Authentication Failed')
+                throw new \Exception('Your Session has been expired. Try to log in')
 ;        }
         catch(ModelNotFoundException $e)
         {

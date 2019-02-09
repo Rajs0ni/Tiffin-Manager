@@ -34,8 +34,8 @@ export const API = {
         namespace:"TiffinMenu",
         action:"get",
         payload:{
-            provider_id:1,
-            tiffin_id:1,
+            provider_id:payload.customer.assoc_provider,
+            tiffin_id:payload.customer.tiffin_plan,
             day:payload.menuDay
         }
     })

@@ -81,17 +81,31 @@ export default {
 
         order(data)
         {
+            helper.setCustomerFromStorage()
             this.loading = true
-            setTimeout(() => {
-                var date = new Date();
-                var current_time = date.getHours();
-                this.$store.dispatch('Tiffin/saveOrder', {
-                customer:this.customer,
-                quantity:this.Quantity,
-                data:data,
-                time:current_time })
+            if(helper.isLoggedIn())
+            {
+                setTimeout(() => {
+                    var date = new Date();
+                    var current_time = date.getHours();
+                    this.$store.dispatch('Tiffin/saveOrder', {
+                    customer:this.customer,
+                    quantity:this.Quantity,
+                    data:data,
+                    time:current_time })
+                    this.loading = false
+                }, 1000)
+            }
+            else
+            {
                 this.loading = false
-            }, 1000)
+                this.$store.dispatch('Tiffin/setFlash',{
+                    icon:"error",
+                    type:"negative",
+                    message:"Your Session has expired. Please log in"
+                })
+            }
+            
         }
     }
 }

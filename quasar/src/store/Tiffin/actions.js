@@ -1,4 +1,4 @@
-import {API} from '../api.js';
+import { API } from '../api.js';
 import * as types from '../types.js';
 export const actions = {
 
@@ -78,6 +78,8 @@ export const actions = {
         .then((response)=>{
             commit(types.SET_CUSTOMER, response)
         })
+        if(response.status==200)
+        payload.callback(response);
     },
 
     async getCustomer({commit, dispatch},payload){
@@ -86,6 +88,10 @@ export const actions = {
         .then((response)=>{
             commit(types.SET_CUSTOMER, response)
         })
+    },
+
+    async setCustomerFromStorage({commit, dispatch},payload){
+        commit(types.SET_CUSTOMER, payload)
     },
 
     async setFlash({commit}, payload)

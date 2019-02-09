@@ -11,13 +11,13 @@ export default {
   name: 'App',
   mounted(){
     // alert(helper.isLoggedIn())
-    if(this.$q.localStorage.has('customer'))
-    {
-       const customer = this.$q.localStorage.get.item('customer')
-       this.$store.dispatch('Tiffin/getCustomer', {
-         customer:customer
-        })
-    }
+    // if(this.$q.localStorage.has('customer'))
+    // {
+    //    const customer = this.$q.localStorage.get.item('customer')
+    //    this.$store.dispatch('Tiffin/getCustomer', {
+    //      customer:customer
+    //     })
+    // }
 
   }
 }
