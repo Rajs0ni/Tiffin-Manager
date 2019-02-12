@@ -7,6 +7,19 @@ export default {
      return store.state.Tiffin.customer.isLoggedIn
     },
     
+    isLocallySet()
+    {
+      if(LocalStorage.has('customer'))
+      {
+        var customer = LocalStorage.get.item('customer')
+        if(customer && customer['name'] && customer['location'])
+          return true 
+        else
+          return false
+      }
+      else
+        return false
+    },
 
     setCustomerFromStorage()
     {
@@ -14,7 +27,7 @@ export default {
       {
         var customer = LocalStorage.get.item('customer')
         if(customer && customer['name'] && customer['location'])
-          store.dispatch('Tiffin/setCustomerFromStorage',customer)
+          store.commit('Tiffin/SET_CUSTOMER',customer)
         else
           store.state.Tiffin.customer.isLoggedIn = false
       }

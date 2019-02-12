@@ -89,11 +89,7 @@ export const actions = {
             commit(types.SET_CUSTOMER, response)
         })
     },
-
-    async setCustomerFromStorage({commit, dispatch},payload){
-        commit(types.SET_CUSTOMER, payload)
-    },
-
+    
     async setFlash({commit}, payload)
     {
         commit(types.SET_FLASH, payload)

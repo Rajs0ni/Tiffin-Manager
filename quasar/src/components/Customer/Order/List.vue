@@ -42,7 +42,7 @@ export default {
     },
     mounted(){
         this.$store.dispatch('Tiffin/setCustomerOrders',{
-            user_id:2
+            user_id:this.$store.state.Tiffin.customer.detail.id
         })
     }
 }

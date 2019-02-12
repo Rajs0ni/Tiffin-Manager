@@ -75,7 +75,7 @@ class Customer {
                              ->setStatus(200);
             }
             else
-                throw new \Exception('Your Session has been expired. Retry to log in');
+                throw new \Exception('Your Session has been expired. Try to log in');
         }
         catch(ModelNotFoundException $e)
         {

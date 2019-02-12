@@ -24,24 +24,24 @@ export default function (/* { store, ssrContext } */) {
   })
 
   Router.beforeEach((to,from,next)=>{
-    helper.setCustomerFromStorage()
     if(to.matched.some(record => record.meta.requiresAuth))
-    {
-        if(helper.isLoggedIn())
-          next()             
+      {
+        if(helper.isLoggedIn() || helper.isLocallySet())
+        {
+          next()
+        }
         else
           next('/verify')
-      next()
-    }else if (to.matched.some(record => record.meta.redirectIfLogged))
-    {
-      if (helper.isLoggedIn()) 
-        Router.go(-1)
-      else
-        if(to.fullPath == '/register')
-         next('/verify')
-      next()
-    } 
-    next()
+      }
+      else if(to.matched.some(record => record.meta.redirectIfLogged))
+      {
+        if(helper.isLoggedIn() || helper.isLocallySet())
+        {
+          Router.go(-1)
+        }
+        else
+          next()
+      }
    }) 
 
   return Router

@@ -82,7 +82,6 @@ export default {
 
         order(data)
         {
-            helper.setCustomerFromStorage()
             this.loading = true
             if(helper.isLoggedIn())
             {
@@ -98,14 +97,8 @@ export default {
                }, 1500)
             }
             else
-            {
                 this.loading = false
-                this.$store.dispatch('Tiffin/setFlash',{
-                    icon:"error",
-                    type:"negative",
-                    message:"Your Session has expired. Please log in"
-                })
-            }
+           
             
             
         }

@@ -8,7 +8,7 @@
           <q-item>
             <q-item-main class="on-right">Tiffin Plan</q-item-main>
             <q-item-side class="on-left">{{ order.tiffin_plan }}</q-item-side>
-          </q-item>
+          </q-item>   
           <q-card-separator />
           <q-item>
             <q-item-main class="on-right">Quantity</q-item-main>
@@ -45,7 +45,8 @@ import {mapState} from 'vuex'
 export default {
   computed:{
      ...mapState({
-            order:state => state.Tiffin.customer.order
+            order:state => state.Tiffin.customer.order,
+            customer:state => state.Tiffin.customer.detail
         })
   },
   mounted(){
@@ -57,7 +58,7 @@ export default {
       if(this.$route.params.id)
       {
         this.$store.dispatch('Tiffin/setCustomerOrder',{
-          user_id:2,
+          user_id:this.customer.id,
           order_id:this.$route.params.id
         })  
       }
