@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import helper from '../store/helper'
-import { LocalStorage } from 'quasar'
 import routes from './routes'
 
 Vue.use(VueRouter)
@@ -24,24 +23,12 @@ export default function (/* { store, ssrContext } */) {
   })
 
   Router.beforeEach((to,from,next)=>{
-    if(to.matched.some(record => record.meta.requiresAuth))
-      {
-        if(helper.isLoggedIn() || helper.isLocallySet())
-        {
-          next()
-        }
-        else
-          next('/verify')
-      }
+      if(to.matched.some(record => record.meta.requiresAuth))
+        helper.isLoggedIn() || helper.isLocallySet() ? next() : next('/verify')
       else if(to.matched.some(record => record.meta.redirectIfLogged))
-      {
-        if(helper.isLoggedIn() || helper.isLocallySet())
-        {
-          Router.go(-1)
-        }
-        else
+        helper.isLoggedIn() || helper.isLocallySet() ?  Router.go(-1) : next()
+      else
           next()
-      }
    }) 
 
   return Router

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\User;
 use Validator;
 use App\Tiffin;
+use Carbon\Carbon;
 
 class Order {
 
@@ -88,28 +89,31 @@ class Order {
             $customerSecret = $requestBody->payload['customer']['remember_token'];
             if(strcmp($customer->remember_token,$customerSecret) == 0)
             {
-                $time = $requestBody->payload['time'];
-                $data = $requestBody->payload['data'];
-                $tiffin = Tiffin::findOrFail($data['id']);
-                $order = new OrderModel;
-                $order->provider_id = $tiffin->provider_id;
-                $order->tiffin_id = $tiffin->id;
-                $order->no_of_tiffin = $requestBody->payload['quantity'];
-                if($time<=date('G',strtotime($tiffin->lunch_end)))
-                    $order->is_lunch = true;
-                else
-                    $order->is_dinner = true;
-                $order->price = $tiffin->price;
-                $order->total_amount = $requestBody->payload['quantity'] * $tiffin->price;
-                $customer->orders('customer_id')->save($order);
+                $time = date("H:i:s", time());
 
-                $order ? $responseBody->setFlash("Order has been placed successfully !!") 
-                                      ->setStatus(200)
-                       : $responseBody->setFlash("Order can not be placed !!")
-                                      ->setStatus(500);
+                // $time = $requestBody->payload['time'];
+                $tiffin = Tiffin::findOrFail($customer->tiffin_plan);
+                // $data = $requestBody->payload['data'];
+                // $order = new OrderModel;
+                // $order->provider_id = $tiffin->provider_id;
+                // $order->tiffin_id = $tiffin->id;
+                // $order->no_of_tiffin = $requestBody->payload['quantity'];
+                if($time<=$tiffin->dinner_end) //17:00:00<=18:00:00
+                $responseBody->setData($time<=$tiffin->dinner_end);
+                // $order->is_lunch = true;
+                else
+                $responseBody->setData($time<=$tiffin->dinner_end);;
+                // $order->price = $tiffin->price;
+                // $order->total_amount = $requestBody->payload['quantity'] * $tiffin->price;
+                // $customer->orders('customer_id')->save($order);
+
+                // $order ? $responseBody->setFlash("Order has been placed successfully !!") 
+                //                       ->setStatus(200)
+                //        : $responseBody->setFlash("Order can not be placed !!")
+                //                       ->setStatus(500);
             }
             else
-                throw new \Exception('Your Session has been expired. Try to log in')
+                throw new \Exception('Your Session has been expired. Try to log in again')
 ;        }
         catch(ModelNotFoundException $e)
         {

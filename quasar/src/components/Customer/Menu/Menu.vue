@@ -2,30 +2,28 @@
   <q-page >
     <q-pull-to-refresh :handler="refresher">
       <q-list separator no-border class="q-mt-sm">
-        <lunch></lunch>
-        <dinner></dinner>
+        <Display v-for="(value,key,index) in menus" :menu="value" :key="index" :title="key"></Display>
       </q-list>
     </q-pull-to-refresh>
   </q-page>
 </template>
 
 <script>
-import lunch from 'components/Customer/Menu/Lunch.vue'
-import dinner from 'components/Customer/Menu/Dinner.vue'
-import * as time from 'src/store/time.js'
+import Display from 'components/Customer/Menu/Display.vue'
 import { mapState } from 'vuex';
 
 export default {
   components:{
-    lunch,dinner
+    Display
   },
   created(){
     this.getTodayMenu()
   },
  computed:{
    ...mapState({
+     menus: state => state.Tiffin.customer.menu,
      customer:state => state.Tiffin.customer.detail
-   })
+   }),
  },
   methods:{
     refresher (done) {
@@ -42,23 +40,7 @@ export default {
           customer:this.customer,
           menuDay: day
         })
-        .then(()=>{
-          this.storeTimeLocally();
-        })
     },
-    storeTimeLocally(){
-        let lunch_start = this.$store.state.Tiffin.customer.menu.lunch_start
-        let lunch_end = this.$store.state.Tiffin.customer.menu.lunch_end
-        let dinner_start = this.$store.state.Tiffin.customer.menu.dinner_start
-        let dinner_end = this.$store.state.Tiffin.customer.menu.dinner_end
-        if(lunch_start && lunch_end && dinner_start && dinner_end)
-        {
-          this.$q.localStorage.set(time.LUNCH_START, lunch_start)
-          this.$q.localStorage.set(time.LUNCH_END, lunch_end)
-          this.$q.localStorage.set(time.DINNER_START, dinner_start)
-          this.$q.localStorage.set(time.DINNER_END, dinner_end)
-        }
-    }
 }
 }
 </script>

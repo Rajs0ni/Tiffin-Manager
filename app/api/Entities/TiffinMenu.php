@@ -51,21 +51,41 @@ class TiffinMenu {
    
     public function get(RequestBody $requestBody, ResponseBody $responseBody)
     {
+        $quantity = 1;
+    
         try
         {
             $provider = $this->validateProvider($requestBody);
             $tiffinId = $requestBody->payload['tiffin_id'];
             $tiffin = $provider->tiffins()->findOrFail($tiffinId);
             $day = $requestBody->payload['day'];
-            $tiffinWithMenu = $tiffin->load(['menus' => function ($query) use ($day) {
-                $query->where('day', $day);
-            }]);
+            $menu = $tiffin->menus->where('day', $day)->first();
+            // $tiffinWithMenu = $tiffin->load(['menus' => function ($query) use ($day) {
+            //     $query->where('day', $day);
+            // }]);
 
-            $tiffinWithMenu->menus->count() ? $responseBody->setData($tiffinWithMenu)
-                                                           ->setStatus(200)
-                                            : $responseBody->setError("Menu For The Day Not found")
-                                                           ->setStatus(500);
-   
+            $lunch = [
+                'desc' => $menu->lunch_desc,
+                'start_time' => $tiffin->lunch_start,
+                'end_time' => $tiffin->lunch_end
+            ];
+
+            $dinner = [
+                'desc' => $menu->dinner_desc,
+                'start_time' => $tiffin->dinner_start,
+                'end_time' => $tiffin->dinner_end
+            ];
+
+            $data = [
+                'Lunch' => $lunch,
+                'Dinner' => $dinner
+            ];
+            // $tiffinWithMenu->menus->count() ? $responseBody->setData($tiffinWithMenu)
+            //                                                ->setStatus(200)
+            //                                 : $responseBody->setError("Menu For The Day Not found")
+            //                                                ->setStatus(500);
+  
+            $responseBody->setData($data);
         }
         catch(ModelNotFoundException $e)
         {
