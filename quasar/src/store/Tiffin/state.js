@@ -4,16 +4,17 @@ export const state = {
     menu:{},
     orders:[],
     order:{},
-    detail:{
-      id:'',
-      name:'',
-      mobile:'',
-      location:'',
-      otp:'',
-      tiffin_plan:'',
-      assoc_provider:'',
-      remember_token:''
-    },
+  },
+  
+  user:{
+    id:'',
+    name:'',
+    mobile:'',
+    location:'',
+    otp:'',
+    tiffin_plan:'',
+    assoc_provider:'',
+    remember_token:'',
     isLoggedIn : false
   },
 

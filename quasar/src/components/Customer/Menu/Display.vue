@@ -1,5 +1,5 @@
 <template>
-<div>   
+ <div>   
      <q-collapsible :icon="title=='Lunch' ? 'wb_sunny': 'brightness_3'"  :label="title" opened >
         <q-card inline class="fit" v-if="menu">
           <q-card-main>
@@ -30,9 +30,7 @@
           <q-card-separator />
           <div class="text-center">
               <div class="q-mt-sm q-mb-sm"> 
-                  <q-btn outline color="positive" :loading="loading" :disabled="active"  @click="order(title,menu)">
-                       Order<span slot="loading"><q-spinner-hourglass class="text-center" />Loading...</span>
-                  </q-btn>
+                  <q-btn outline color="positive" @click="order(title,menu)">Order</q-btn>
               </div> 
           </div>
         </q-card>
@@ -51,21 +49,24 @@ export default {
     data(){
         return{
             Quantity:1,
-            active:false,
-            loading:false
         }
     },
     computed:{
           ...mapState({
-         customer: state => state.Tiffin.customer.detail 
+         customer: state => state.Tiffin.user
         }),
     },
     methods:{
         canOrderOrNot(menu)
             {
                 var date = new Date();
-                var current_time = date.getHours();
-                return current_time < parseInt(menu.end_time)
+                var hours = date.getHours();
+                var minutes = date.getMinutes();
+                minutes = minutes < 10 ? '0'+minutes : minutes;
+                var seconds = date.getSeconds();
+                seconds = seconds < 10 ? '0'+seconds : seconds;
+                var current_time = hours + ':' + minutes + ':' + seconds;
+                return current_time < menu.end_time
             },
 
         changeQuantity(operation, value)
@@ -78,13 +79,10 @@ export default {
         order(title,menu){
           if(this.canOrderOrNot(menu))
           {
-            var date = new Date();
-            var current_time = date.getHours();
             this.$store.dispatch('Tiffin/saveOrder', {
                     customer:this.customer,
                     quantity:this.Quantity,
-                    data:menu,
-                    time:current_time 
+                    title:title 
                 })
           }
           else
@@ -92,7 +90,7 @@ export default {
             this.$store.dispatch('Tiffin/setFlash',{
                     icon:"error",
                     type:"negative",
-                    message:title + " time is over"
+                    message:"Oops, "+title + " time is over"
                 })
           }
         }

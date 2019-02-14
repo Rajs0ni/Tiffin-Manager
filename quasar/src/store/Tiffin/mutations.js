@@ -42,15 +42,15 @@ import * as types from '../types';
 
     [types.SET_CUSTOMER](state, response)
     {
-        state.customer.detail.id = response.id 
-        state.customer.detail.name = response.name 
-        state.customer.detail.mobile = response.mobile
-        state.customer.detail.location = response.location
-        state.customer.detail.tiffin_plan = response.tiffin_plan
-        state.customer.detail.assoc_provider = response.assoc_provider
-        state.customer.detail.remember_token = response.remember_token
+        state.user.id = response.id 
+        state.user.name = response.name 
+        state.user.mobile = response.mobile
+        state.user.location = response.location
+        state.user.tiffin_plan = response.tiffin_plan
+        state.user.assoc_provider = response.assoc_provider
+        state.user.remember_token = response.remember_token
 
-        state.customer.isLoggedIn = true;
+        state.user.isLoggedIn = true;
     }
 }
 

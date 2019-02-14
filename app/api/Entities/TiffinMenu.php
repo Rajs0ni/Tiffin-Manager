@@ -51,18 +51,12 @@ class TiffinMenu {
    
     public function get(RequestBody $requestBody, ResponseBody $responseBody)
     {
-        $quantity = 1;
-    
         try
         {
-            $provider = $this->validateProvider($requestBody);
             $tiffinId = $requestBody->payload['tiffin_id'];
-            $tiffin = $provider->tiffins()->findOrFail($tiffinId);
+            $tiffin = Tiffin::findOrFail($tiffinId);
             $day = $requestBody->payload['day'];
             $menu = $tiffin->menus->where('day', $day)->first();
-            // $tiffinWithMenu = $tiffin->load(['menus' => function ($query) use ($day) {
-            //     $query->where('day', $day);
-            // }]);
 
             $lunch = [
                 'desc' => $menu->lunch_desc,
@@ -80,12 +74,10 @@ class TiffinMenu {
                 'Lunch' => $lunch,
                 'Dinner' => $dinner
             ];
-            // $tiffinWithMenu->menus->count() ? $responseBody->setData($tiffinWithMenu)
-            //                                                ->setStatus(200)
-            //                                 : $responseBody->setError("Menu For The Day Not found")
-            //                                                ->setStatus(500);
-  
-            $responseBody->setData($data);
+            isset($data) ? $responseBody->setData($data)
+                                        ->setStatus(200)
+                         : $responseBody->setError("Menu For The Day Not found")
+                                        ->setStatus(500);
         }
         catch(ModelNotFoundException $e)
         {

@@ -11,7 +11,7 @@
                                 <q-item-tile label>Quantity&nbsp;:&nbsp;<span >{{ record.no_of_tiffin }}</span></q-item-tile>
                             </q-item-main>
                             <q-item-side right> 
-                                <span style="color:grey">{{ record.created_at | parseDate}}</span>
+                                <span style="color:grey">{{ record.is_lunch?'Lunch':'Dinner' }} on {{ record.created_at | parseDate }}</span>
                             </q-item-side>
                         </q-item>
                         <q-card-separator />
@@ -32,7 +32,8 @@ import {mapState} from 'vuex'
 export default {
     computed:{
         ...mapState({
-            orders:state => state.Tiffin.customer.orders
+            orders:state => state.Tiffin.customer.orders,
+            user: state => state.Tiffin.user
         })
     },
     methods:{
@@ -42,7 +43,7 @@ export default {
     },
     mounted(){
         this.$store.dispatch('Tiffin/setCustomerOrders',{
-            user_id:this.$store.state.Tiffin.customer.detail.id
+            user_id:this.user.id
         })
     }
 }

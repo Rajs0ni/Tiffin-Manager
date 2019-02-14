@@ -10,6 +10,11 @@
             <q-item-side class="on-left">{{ order.customer_name }}</q-item-side>
           </q-item>
           <q-card-separator />
+           <q-item>
+            <q-item-main class="on-right">Lunch/Dinner</q-item-main>
+            <q-item-side class="on-left">{{ order.is_lunch?'Lunch':'Dinner' }}</q-item-side>
+          </q-item>
+          <q-card-separator />
           <q-item>
             <q-item-main class="on-right">Tiffin Plan</q-item-main>
             <q-item-side class="on-left">{{ order.tiffin_plan }}</q-item-side>

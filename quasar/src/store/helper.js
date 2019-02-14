@@ -4,7 +4,7 @@ import store from '../store'
 export default {
 
     isLoggedIn(){
-     return store.state.Tiffin.customer.isLoggedIn
+     return store.state.Tiffin.user.isLoggedIn
     },
     
     isLocallySet()
@@ -29,9 +29,9 @@ export default {
         if(customer && customer['name'] && customer['location'])
           store.commit('Tiffin/SET_CUSTOMER',customer)
         else
-          store.state.Tiffin.customer.isLoggedIn = false
+           store.state.Tiffin.user.isLoggedIn = false
       }
       else
-        store.state.Tiffin.customer.isLoggedIn = false
+          store.state.Tiffin.user.isLoggedIn = false
     }
 }

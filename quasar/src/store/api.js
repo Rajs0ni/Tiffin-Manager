@@ -34,9 +34,8 @@ export const API = {
         namespace:"TiffinMenu",
         action:"get",
         payload:{
-            provider_id:payload.customer.assoc_provider,
-            tiffin_id:payload.customer.tiffin_plan,
-            day:payload.menuDay
+            tiffin_id:payload.tiffin_id,
+            day:payload.day,
         }
     })
     .then((response) => (response.data))
@@ -63,8 +62,7 @@ export const API = {
         payload:{
             customer:payload.customer,
             quantity:payload.quantity,
-            data:payload.data,
-            time:payload.time
+            title:payload.title
         }
     })
     .then((response) => (response.data))

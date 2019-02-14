@@ -22,9 +22,42 @@ class Order {
             $orders = $user->orders($column)->get();
             $orders = $orders->groupBy('status');
             foreach($orders as $key => $value)
-            {
-                $data[] = ['key' => $key,'value' => $value];
-            }
+                $data[] = array('key'=>$key, 'value'=>$value);
+            // foreach($orders as $key => $value)
+            // {
+            //     if($key == 0)
+            //     {
+            //         foreach($value as $v)
+            //         {
+            //             $name = User::findOrFail($v->customer_id)->name;
+            //             $pendings[] = [
+            //                 'name' => $name,
+            //                 'order' => $v
+            //             ];
+            //         }
+            //         $pending[] = [
+            //             'value' => $pendings
+            //         ];
+            //     }
+            //     if($key == 1)
+            //     {
+            //         foreach($value as $v)
+            //         {
+            //             $name = User::findOrFail($v->customer_id)->name;
+            //             $complete[] = [
+            //                 'name' => $name,
+            //                 'order' => $v
+            //             ];
+            //         }
+            //         $completed[] = [
+            //             'value' => $complete
+            //         ];
+            //     }
+            // }
+            // $data[] = [
+            //     '0' => $pending,
+            //     '1' => $completed
+            // ];
             !$orders->isEmpty() ? $responseBody->setData($data)
                                                ->setStatus(200)
                                 : $responseBody->setError('Orders Not Found')
@@ -89,28 +122,35 @@ class Order {
             $customerSecret = $requestBody->payload['customer']['remember_token'];
             if(strcmp($customer->remember_token,$customerSecret) == 0)
             {
-                $time = date("H:i:s", time());
-
-                // $time = $requestBody->payload['time'];
+                $order = new OrderModel;
                 $tiffin = Tiffin::findOrFail($customer->tiffin_plan);
-                // $data = $requestBody->payload['data'];
-                // $order = new OrderModel;
-                // $order->provider_id = $tiffin->provider_id;
-                // $order->tiffin_id = $tiffin->id;
-                // $order->no_of_tiffin = $requestBody->payload['quantity'];
-                if($time<=$tiffin->dinner_end) //17:00:00<=18:00:00
-                $responseBody->setData($time<=$tiffin->dinner_end);
-                // $order->is_lunch = true;
+                $time = date("H:i:s", time());
+                $title = $requestBody->payload['title'];
+                if($title == 'Lunch')
+                {
+                    if($time<=$tiffin->lunch_end)
+                        $order->is_lunch = true;
+                    else
+                         throw new \Exception("Lunch time is over.Please go for the dinner");
+                }
                 else
-                $responseBody->setData($time<=$tiffin->dinner_end);;
-                // $order->price = $tiffin->price;
-                // $order->total_amount = $requestBody->payload['quantity'] * $tiffin->price;
-                // $customer->orders('customer_id')->save($order);
+                {
+                    if($time<=$tiffin->dinner_end)
+                        $order->is_dinner = true;
+                    else
+                        throw new \Exception("Oops, Dinner time is over.");
+                }   
+                $order->provider_id = $customer->assoc_provider;
+                $order->tiffin_id = $customer->tiffin_plan;
+                $order->no_of_tiffin = $requestBody->payload['quantity'];
+                $order->price = $tiffin->price;
+                $order->total_amount = $requestBody->payload['quantity'] * $tiffin->price;
+                $customer->orders('customer_id')->save($order);
 
-                // $order ? $responseBody->setFlash("Order has been placed successfully !!") 
-                //                       ->setStatus(200)
-                //        : $responseBody->setFlash("Order can not be placed !!")
-                //                       ->setStatus(500);
+                $order ? $responseBody->setFlash("Order has been placed successfully !!") 
+                                      ->setStatus(200)
+                       : $responseBody->setFlash("Order can not be placed !!")
+                                      ->setStatus(500);
             }
             else
                 throw new \Exception('Your Session has been expired. Try to log in again')
@@ -163,7 +203,9 @@ class Order {
     public function validate(RequestBody $requestBody)
     {
         $validator = Validator::make($requestBody->payload, [
+            'title' => 'required | string',
             'quantity' => 'required | numeric | min:1 | max:4',
+            'customer' => 'required'
         ]);
 
         if ($validator->fails()) {
