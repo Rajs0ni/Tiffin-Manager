@@ -51,6 +51,11 @@ import * as types from '../types';
         state.user.remember_token = response.remember_token
 
         state.user.isLoggedIn = true;
+    },
+
+    [types.SET_PROVIDERS](state, response)
+    {
+        state.providers = response
     }
 }
 

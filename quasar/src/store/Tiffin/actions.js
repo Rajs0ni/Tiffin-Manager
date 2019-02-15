@@ -75,11 +75,12 @@ export const actions = {
     async register({commit, dispatch},payload){
         var response = await API.register(payload)
         dispatch('filterResponse',response)
-        .then((response)=>{
-            commit(types.SET_CUSTOMER, response)
-        })
         if(response.status==200)
-        payload.callback(response);
+        {
+            commit(types.SET_CUSTOMER, response.data)
+            payload.callback(response);
+        }
+        
     },
 
     async getCustomer({commit, dispatch},payload){
@@ -96,5 +97,11 @@ export const actions = {
         setTimeout(function(){
             commit(types.RESET_FLASH) 
         },3000)
+    },
+
+    async getProviders({commit}, payload)
+    {
+        var response = await API.getProviders()
+        commit(types.SET_PROVIDERS, response.data)
     }
 }

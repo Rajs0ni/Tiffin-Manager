@@ -29,8 +29,16 @@
 
     <q-layout-drawer
       v-model="leftDrawerOpen"
-      :content-class="$q.theme === 'mat' ? 'bg-grey-2' : null"
+      :content-class="$q.theme === 'mat' ? 'bg-white' : null"
     >
+    <div class="row" id="logo">
+      <div class="col-12 text-center">
+          <div class="app-img q-pa-xs">
+             <img class="img-fluid" style="width:25vh;height:23vh" src="~assets/logo.png">
+             <p class="q-body-2 text-orange-8" >Tiffin Manager</p>
+          </div>
+      </div>
+    </div>
       <q-list
         no-border
         link
@@ -79,3 +87,8 @@ export default {
 }
 </script>
 
+<style scoped>
+  .app-img{
+    border-bottom: 1px solid lavender; 
+  }
+</style>

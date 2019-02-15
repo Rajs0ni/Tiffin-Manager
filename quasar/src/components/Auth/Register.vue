@@ -25,7 +25,7 @@
                         <q-input 
                            v-model="customer.location"
                            color="orange-8"
-                            align="center"
+                           align="center"
                            placeholder="Your Location" 
                            type="text"  />
                     </div>
@@ -35,9 +35,9 @@
                 <div class="row">
                     <div class="col-12">
                         <q-btn 
-                            @click.native="register()" 
+                            @click="register()" 
                             class="bg-orange-8 text-white text-weight-bold">
-                            Register
+                            Proceed
                         </q-btn>
                     </div>
                 </div>
@@ -56,7 +56,7 @@ export default {
     },
  computed:{
             ...mapState({
-            customer: state => state.Tiffin.customer.detail
+            customer: state => state.Tiffin.user
         }),
     },
  methods:{
@@ -67,7 +67,7 @@ export default {
             callback:function(response){
                 self.$q.localStorage.set('customer_secret', response.data.remember_token)
                 self.$q.localStorage.set('customer',response.data)
-                self.$router.push({path:'/customer'})
+                self.$router.push({path:'/myprovider'})
             }
         })
     }

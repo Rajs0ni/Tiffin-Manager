@@ -115,5 +115,14 @@ export const API = {
     })
     .then((response) => (response.data))
     .catch((error) => (error))
+ },
+
+ getProviders(){
+    return Axios.post('',{
+        namespace:"Provider",
+        action:"list",
+    })
+    .then((response) => (response.data))
+    .catch((error) => (error))
  }
 }

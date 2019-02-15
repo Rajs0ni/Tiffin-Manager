@@ -5,19 +5,19 @@ export const state = {
     orders:[],
     order:{},
   },
-  
   user:{
-    id:'',
-    name:'',
-    mobile:'',
-    location:'',
-    otp:'',
-    tiffin_plan:'',
-    assoc_provider:'',
-    remember_token:'',
+    id:null,
+    name:null,
+    mobile:null,
+    location:null,
+    otp:null,
+    tiffin_plan:null,
+    assoc_provider:null,
+    remember_token:null,
     isLoggedIn : false
   },
-
+  
+  providers:[],
   provider:{
     menu:{},
     orders:[],

@@ -40,8 +40,15 @@ const routes = [
     meta: { 
       redirectIfLogged: true,
     }
-
+  },
+  {
+    path:'/myprovider',
+    component: () => import('components/Auth/Provider.vue'),
+    meta: { 
+      requiresAuth: true
+    }
   }
+
 ]
 
 // Always leave this as last one

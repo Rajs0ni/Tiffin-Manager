@@ -92,7 +92,7 @@ export default {
     },
     computed:{
             ...mapState({
-            customer: state => state.Tiffin.customer.detail
+            customer: state => state.Tiffin.user
         }),
     },
     methods:{

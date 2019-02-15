@@ -7,7 +7,7 @@
                     <q-list-header v-else style="color:green">Delivered</q-list-header>
                         <q-item highlight separator class="cursor-pointer" v-for="record in order.value" :key="record.index" @click.native="getOrder(record)">
                             <q-item-side left color="grey-10">
-                                <q-item-tile label>Order ID&nbsp;:&nbsp;<span>{{ record.id }}</span></q-item-tile>
+                                <q-item-tile label>Name&nbsp;:&nbsp;<span>{{ record.id }}</span></q-item-tile>
                                 <q-item-tile label>Quantity&nbsp;:&nbsp;<span >{{ record.no_of_tiffin }}</span></q-item-tile>
                             </q-item-side>
                             <q-item-main class="text-center" >
