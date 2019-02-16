@@ -49,7 +49,7 @@ import * as types from '../types';
         state.user.tiffin_plan = response.tiffin_plan
         state.user.assoc_provider = response.assoc_provider
         state.user.remember_token = response.remember_token
-
+        
         state.user.isLoggedIn = true;
     },
 

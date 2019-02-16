@@ -47,6 +47,13 @@ const routes = [
     meta: { 
       requiresAuth: true
     }
+  },
+  {
+    path:'/mytiffinplan',
+    component: () => import('components/Auth/TiffinPlan.vue'),
+    meta: { 
+      requiresAuth: true
+    }
   }
 
 ]

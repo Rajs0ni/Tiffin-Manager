@@ -6,7 +6,7 @@
                 <q-toolbar-title class="q-pa-none">
                     My Tiffin Provider
                 </q-toolbar-title>
-                <q-btn flat dense>Next</q-btn>
+                <q-btn flat dense @click="associateProvider()">Next</q-btn>
             </q-toolbar>
             <div class="q-pa-xs">
                 <q-search 
@@ -21,7 +21,7 @@
                 <q-toolbar-title>
                     My Provider
                 </q-toolbar-title>
-                <q-btn flat dense>Select</q-btn>
+                <q-btn flat dense @click="associateProvider()">Select</q-btn>
             </q-toolbar>
         </div>
    </div>
@@ -38,7 +38,7 @@
             <q-item-tile sublabel>{{ provider.location }}</q-item-tile>
             </q-item-main>
           <q-item-side right>
-            <q-radio v-model="providerId" val="opt4" color="green-7" />
+            <q-radio v-model="customer.assoc_provider" :val="provider.id" color="green-7" />
             <q-icon name="chevron_right" style="font-size: 25px"  />
           </q-item-side>
         </q-item>
@@ -78,7 +78,8 @@ export default {
     },
     computed:{
         ...mapState({
-            providers:state => state.Tiffin.providers
+            providers:state => state.Tiffin.providers,
+            customer:state => state.Tiffin.user
         })
     },
     mounted(){
@@ -91,6 +92,19 @@ export default {
         getProvider(provider){
             this.visible = !this.visible
             this.provider = provider
+        },
+        associateProvider(){
+            const self = this
+            if(self.customer.assoc_provider)
+            {
+                this.$store.dispatch('Tiffin/register',{
+                customer:this.customer,
+                callback:function(response){
+                    self.$q.localStorage.set('customer_secret', response.data.remember_token)
+                    self.$q.localStorage.set('customer',response.data)
+                    self.$router.push({path:'/mytiffinplan'})
+                }})
+            }
         }
     }
 }
